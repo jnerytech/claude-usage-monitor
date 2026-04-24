@@ -14,6 +14,7 @@ contextBridge.exposeInMainWorld('claudeAPI', {
   restoreWidget:  (h) => ipcRenderer.send('restore-widget', h),
   resizeWindow:   (h) => ipcRenderer.send('resize-window', h),
   quitApp:        () => ipcRenderer.send('quit-app'),
-  onUsageData:   (cb) => ipcRenderer.on('usage-data',   (_, p) => cb(p)),
-  onAuthStatus:  (cb) => ipcRenderer.on('auth-status',  (_, p) => cb(p)),
+  onUsageData:    (cb) => ipcRenderer.on('usage-data',    (_, p) => cb(p)),
+  onAuthStatus:   (cb) => ipcRenderer.on('auth-status',  (_, p) => cb(p)),
+  onNextFetchAt:  (cb) => ipcRenderer.on('next-fetch-at', (_, v) => cb(v)),
 });

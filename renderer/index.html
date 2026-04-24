@@ -54,14 +54,24 @@
       <!-- Settings panel -->
       <div id="settings-panel" style="display:none">
         <div class="settings-section">
-          <div class="settings-label">Intervalo de atualização</div>
+          <div class="settings-label">Tema</div>
+          <div class="theme-picker">
+            <button class="theme-opt" data-theme="dark">Escuro</button>
+            <button class="theme-opt" data-theme="light">Claro</button>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-label">Recarga da página</div>
           <select id="interval-select" class="settings-select">
+            <option value="5">5 segundos</option>
             <option value="15">15 segundos</option>
             <option value="30">30 segundos</option>
             <option value="60">1 minuto</option>
             <option value="120">2 minutos</option>
             <option value="300">5 minutos</option>
           </select>
+          <p class="settings-hint">DOM relido a cada 2s. Recarga busca dados novos do servidor.</p>
         </div>
 
         <div class="settings-section">

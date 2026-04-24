@@ -10,11 +10,13 @@ let mainWindow = null;
 let loginWindow = null;
 let hiddenWindow = null;
 let tray = null;
-let fetchTimer = null;
+let reloadTimer = null;  // fires at user interval → reloads the page
+let extractTimer = null; // fires every 2s → re-reads already-loaded DOM
 let nextFetchAt = null;
 
 const DEFAULT_INTERVAL_S = 30;
 const RENDER_DELAY_MS = 3_000;
+const EXTRACT_INTERVAL_MS = 2_000; // how often to re-read DOM while page is loaded
 const CLAUDE_ORIGIN = 'https://claude.ai';
 const USAGE_URL = 'https://claude.ai/settings/usage';
 const LOGIN_URL = 'https://claude.ai/login';
@@ -92,65 +94,91 @@ const EXTRACT_SCRIPT = `
 `;
 
 // ---------------------------------------------------------------------------
-// Hidden window for fetching usage data
+// Hidden window — keep-alive architecture
+//
+// Two separate timers:
+//   reloadTimer  → reloads the page at user-configured interval (fresh server data)
+//   extractTimer → re-reads the already-loaded DOM every 2s (near real-time)
 // ---------------------------------------------------------------------------
-
-function createHiddenWindow() {
-  if (hiddenWindow && !hiddenWindow.isDestroyed()) {
-    hiddenWindow.destroy();
-  }
-
-  hiddenWindow = new BrowserWindow({
-    show: false,
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-      session: session.defaultSession,
-    },
-  });
-
-  hiddenWindow.webContents.on('did-finish-load', () => {
-    setTimeout(async () => {
-      if (!hiddenWindow || hiddenWindow.isDestroyed()) return;
-      try {
-        const data = await hiddenWindow.webContents.executeJavaScript(EXTRACT_SCRIPT);
-        const payload = { data, fetchedAt: Date.now() };
-        if (mainWindow && !mainWindow.isDestroyed()) {
-          mainWindow.webContents.send('usage-data', payload);
-        }
-      } catch (err) {
-        console.error('executeJavaScript error:', err);
-        if (mainWindow && !mainWindow.isDestroyed()) {
-          mainWindow.webContents.send('usage-data', { error: err.message, fetchedAt: Date.now() });
-        }
-      }
-    }, RENDER_DELAY_MS);
-  });
-
-  hiddenWindow.webContents.on('did-fail-load', (_, code, desc) => {
-    console.error('Hidden window load failed:', code, desc);
-    if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.webContents.send('usage-data', { error: `Load failed: ${desc}`, fetchedAt: Date.now() });
-    }
-  });
-
-  hiddenWindow.loadURL(USAGE_URL);
-}
 
 function getRefreshIntervalMs() {
   const s = store.get('settings', {});
-  return ((s.refreshInterval || DEFAULT_INTERVAL_S) * 1000);
+  return (s.refreshInterval || DEFAULT_INTERVAL_S) * 1000;
+}
+
+async function extractOnce() {
+  if (!hiddenWindow || hiddenWindow.isDestroyed()) return;
+  if (hiddenWindow.webContents.isDestroyed()) return;
+  if (hiddenWindow.webContents.isLoading()) return;
+  try {
+    const data = await hiddenWindow.webContents.executeJavaScript(EXTRACT_SCRIPT);
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('usage-data', { data, fetchedAt: Date.now() });
+    }
+  } catch (err) {
+    // Frame disposed during page reload — expected, not an error.
+    if (err.message && err.message.includes('disposed')) return;
+    console.error('extractOnce error:', err);
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('usage-data', { error: err.message, fetchedAt: Date.now() });
+    }
+  }
+}
+
+function startExtractLoop() {
+  clearInterval(extractTimer);
+  extractOnce();
+  extractTimer = setInterval(extractOnce, EXTRACT_INTERVAL_MS);
+}
+
+function ensureHiddenWindow() {
+  if (!hiddenWindow || hiddenWindow.isDestroyed()) {
+    hiddenWindow = new BrowserWindow({
+      show: false,
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true,
+        session: session.defaultSession,
+      },
+    });
+
+    hiddenWindow.webContents.on('did-finish-load', () => {
+      // Wait for React to render, then start polling the DOM
+      setTimeout(startExtractLoop, RENDER_DELAY_MS);
+    });
+
+    hiddenWindow.webContents.on('did-fail-load', (_, code, desc) => {
+      console.error('Hidden window load failed:', code, desc);
+      clearInterval(extractTimer);
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('usage-data', { error: `Load failed: ${desc}`, fetchedAt: Date.now() });
+      }
+    });
+  }
+  hiddenWindow.loadURL(USAGE_URL);
+}
+
+function pushNextFetchAt() {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.webContents.send('next-fetch-at', nextFetchAt);
+  }
 }
 
 function scheduleFetch() {
-  clearInterval(fetchTimer);
+  clearInterval(reloadTimer);
+  clearInterval(extractTimer);
+
+  ensureHiddenWindow();
+
   const interval = getRefreshIntervalMs();
   nextFetchAt = Date.now() + interval;
-  createHiddenWindow();
+  pushNextFetchAt(); // tell renderer immediately so countdown starts correctly
 
-  fetchTimer = setInterval(() => {
+  reloadTimer = setInterval(() => {
     nextFetchAt = Date.now() + getRefreshIntervalMs();
-    createHiddenWindow();
+    clearInterval(extractTimer);
+    pushNextFetchAt(); // reset countdown the moment reload fires
+    ensureHiddenWindow();
   }, interval);
 }
 
@@ -215,8 +243,8 @@ function openLoginWindow() {
 function createMainWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
-  const winW = 288;  // 280px widget + 4px body padding × 2 sides
-  const winH = 388;
+  const winW = 280;
+  const winH = 380;
   const margin = 16;
 
   mainWindow = new BrowserWindow({
@@ -301,10 +329,7 @@ ipcMain.handle('get-next-fetch-at', () => nextFetchAt);
 
 ipcMain.on('open-login', () => openLoginWindow());
 
-ipcMain.on('refresh-data', () => {
-  clearInterval(fetchTimer);
-  scheduleFetch();
-});
+ipcMain.on('refresh-data', () => scheduleFetch());
 
 ipcMain.on('logout', async () => {
   store.delete('cookies');
@@ -317,8 +342,8 @@ ipcMain.on('logout', async () => {
 
 ipcMain.on('minimize-widget', () => {
   if (mainWindow && !mainWindow.isDestroyed()) {
-    mainWindow.setMinimumSize(220, 52); // 44px header + 4px padding × 2
-    mainWindow.setSize(mainWindow.getSize()[0], 52);
+    mainWindow.setMinimumSize(220, 44);
+    mainWindow.setSize(mainWindow.getSize()[0], 44);
   }
 });
 
@@ -365,5 +390,6 @@ app.on('window-all-closed', () => {
 });
 
 app.on('before-quit', () => {
-  clearInterval(fetchTimer);
+  clearInterval(reloadTimer);
+  clearInterval(extractTimer);
 });

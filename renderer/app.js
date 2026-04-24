@@ -40,7 +40,7 @@ let nextFetchAt    = null;
 let countdownTick  = null;
 let loggedIn       = false;
 let lastUsageData  = null;   // cache for settings filter
-let settings       = { refreshInterval: 30, hiddenItems: [] };
+let settings       = { refreshInterval: 30, hiddenItems: [], theme: 'dark' };
 
 // ---------------------------------------------------------------------------
 // Panel helpers
@@ -50,19 +50,24 @@ const ALL_CONTENT_PANELS = [authPanel, loadingState, errorState, emptyState];
 
 const WIDGET_EL = document.getElementById('widget');
 
-const BODY_PAD = 4; // px padding on each side of body (prevents border-radius clipping)
-
 function autoResize() {
   if (minimized) return;
   // Double-raf: first frame commits style changes, second measures settled layout.
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    const h = WIDGET_EL.offsetHeight + BODY_PAD * 2;
+    const h = WIDGET_EL.offsetHeight;
     const clamped = Math.max(100, Math.min(560, h));
     if (Math.abs(clamped - fullHeight) > 1) {
       fullHeight = clamped;
       window.claudeAPI.resizeWindow(clamped);
     }
   }));
+}
+
+function applyTheme(theme) {
+  document.body.classList.toggle('theme-light', theme === 'light');
+  document.querySelectorAll('.theme-opt').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.theme === theme);
+  });
 }
 
 function showPanel(panel) {
@@ -188,6 +193,7 @@ function openSettings() {
   settingsBtn.title = 'Voltar';
 
   intervalSelect.value = String(settings.refreshInterval);
+  applyTheme(settings.theme || 'dark'); // sync buttons to current theme
   buildItemsFilter();
 
   ALL_CONTENT_PANELS.forEach(p => p.style.display = 'none');
@@ -213,14 +219,17 @@ function closeSettings() {
 }
 
 async function saveSettings() {
-  const newInterval = parseInt(intervalSelect.value, 10);
+  const newInterval = parseFloat(intervalSelect.value);
 
   const hiddenItems = [];
   itemsFilter.querySelectorAll('input[type=checkbox]').forEach(cb => {
     if (!cb.checked) hiddenItems.push(cb.dataset.label);
   });
 
-  settings = { refreshInterval: newInterval, hiddenItems };
+  const activeThemeBtn = document.querySelector('.theme-opt.active');
+  const theme = activeThemeBtn ? activeThemeBtn.dataset.theme : 'dark';
+
+  settings = { refreshInterval: newInterval, hiddenItems, theme };
   await window.claudeAPI.saveSettings(settings);
 
   closeSettings();
@@ -267,7 +276,10 @@ window.claudeAPI.onUsageData((payload) => {
   }
 
   lastUpdateEl.textContent = `Atualizado às ${formatTime(payload.fetchedAt)}`;
-  syncNextFetchAt();
+});
+
+window.claudeAPI.onNextFetchAt((val) => {
+  nextFetchAt = val;
 });
 
 window.claudeAPI.onAuthStatus((payload) => {
@@ -305,9 +317,8 @@ minimizeBtn.addEventListener('click', () => {
   minimizeBtn.title     = minimized ? 'Restaurar' : 'Minimizar';
 
   if (minimized) {
-    // snapshot with padding so restore gets the right size
-    fullHeight = WIDGET_EL.offsetHeight + BODY_PAD * 2;
-    window.claudeAPI.minimizeWidget(); // sets minHeight→52 + resizes window
+    fullHeight = WIDGET_EL.offsetHeight;
+    window.claudeAPI.minimizeWidget(); // sets minHeight→44 + resizes window
     requestAnimationFrame(() => document.body.classList.add('minimized'));
   } else {
     document.body.classList.remove('minimized');
@@ -315,6 +326,13 @@ minimizeBtn.addEventListener('click', () => {
     // let CSS settle then resize to actual content height
     autoResize();
   }
+});
+
+// Theme picker buttons
+document.querySelectorAll('.theme-opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    applyTheme(btn.dataset.theme);
+  });
 });
 
 closeBtn.addEventListener('click', showConfirm);
@@ -340,6 +358,8 @@ async function init() {
       window.claudeAPI.getAuthStatus(),
       window.claudeAPI.getSettings(),
     ]);
+
+    applyTheme(settings.theme || 'dark');
 
     if (loggedIn) {
       setStatus('loading');
