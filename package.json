@@ -8,7 +8,8 @@
     "build": "electron-builder"
   },
   "dependencies": {
-    "electron-store": "^8.1.0"
+    "electron-store": "^8.1.0",
+    "electron-updater": "^6.8.3"
   },
   "devDependencies": {
     "electron": "^28.3.3",
@@ -20,6 +21,13 @@
     "directories": {
       "output": "dist"
     },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "jnerytech",
+        "repo": "claude-usage-monitor"
+      }
+    ],
     "files": [
       "main.js",
       "preload.js",
@@ -31,7 +39,9 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "assets/icon.ico"

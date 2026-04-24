@@ -3,6 +3,7 @@
 const { app, BrowserWindow, Tray, Menu, ipcMain, screen, session, nativeImage } = require('electron');
 const path = require('path');
 const Store = require('electron-store');
+const { autoUpdater } = require('electron-updater');
 
 const store = new Store();
 
@@ -375,10 +376,40 @@ ipcMain.on('quit-app', () => app.quit());
 // App lifecycle
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Auto-update (electron-updater → GitHub Releases)
+// ---------------------------------------------------------------------------
+
+function setupAutoUpdater() {
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  autoUpdater.on('error', (err) => console.error('autoUpdater error:', err));
+  autoUpdater.on('update-available', (info) => {
+    console.log('Update available:', info.version);
+  });
+  autoUpdater.on('update-downloaded', (info) => {
+    console.log('Update downloaded:', info.version);
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('update-downloaded', { version: info.version });
+    }
+  });
+
+  // Dev builds don't have update metadata — skip to avoid noisy errors.
+  if (!app.isPackaged) return;
+
+  autoUpdater.checkForUpdatesAndNotify().catch((err) => {
+    console.error('checkForUpdates failed:', err);
+  });
+}
+
+ipcMain.on('install-update', () => autoUpdater.quitAndInstall());
+
 app.whenReady().then(async () => {
   await restoreCookies();
   createMainWindow();
   createTray();
+  setupAutoUpdater();
 
   if (hasSavedCookies()) {
     scheduleFetch();

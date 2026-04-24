@@ -17,4 +17,6 @@ contextBridge.exposeInMainWorld('claudeAPI', {
   onUsageData:    (cb) => ipcRenderer.on('usage-data',    (_, p) => cb(p)),
   onAuthStatus:   (cb) => ipcRenderer.on('auth-status',  (_, p) => cb(p)),
   onNextFetchAt:  (cb) => ipcRenderer.on('next-fetch-at', (_, v) => cb(v)),
+  onUpdateDownloaded: (cb) => ipcRenderer.on('update-downloaded', (_, p) => cb(p)),
+  installUpdate:  () => ipcRenderer.send('install-update'),
 });
