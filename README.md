@@ -143,6 +143,9 @@ Ele se conecta à sua conta Claude via uma janela de login nativa, guarda a sess
 2. Baixe o arquivo `Claude-Usage-Monitor-Setup-x.x.x.exe`.
 3. Execute o instalador e siga os passos.
 
+> 💡 Também é possível baixar o instalador gerado em cada commit na aba
+> **Actions → Build → Artifacts** (`claude-usage-monitor-windows-x64`).
+
 ### Opção 2 — A partir do código-fonte
 
 ```bash
@@ -268,9 +271,33 @@ claude-usage-monitor/
 
 ---
 
+## 🛠️ CI / Release
+
+O repositório tem um workflow [`Build`](.github/workflows/build.yml) que cuida do empacotamento:
+
+| Evento                         | O que acontece                                                            |
+| ------------------------------ | ------------------------------------------------------------------------- |
+| Push em `main` ou Pull Request | Build do instalador Windows e upload como **artifact** (30 dias).         |
+| Push de tag `v*` (ex.: `v1.0.0`) | Build + criação automática de uma **GitHub Release** com o `.exe` anexado. |
+| `workflow_dispatch`            | Build manual pela aba Actions.                                            |
+
+### Publicando uma nova versão
+
+```bash
+# atualize a versão em package.json, commit, e então:
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+A pipeline vai gerar o instalador, criar a Release e anexar os arquivos
+`.exe`, `.blockmap` e `latest.yml` (este último habilita auto-update via
+`electron-updater` no futuro).
+
+---
+
 ## 🗺️ Roadmap
 
-- [ ] Build e release automáticos via GitHub Actions
+- [x] Build e release automáticos via GitHub Actions
 - [ ] Suporte a macOS e Linux
 - [ ] Histórico de uso com gráfico (últimos 7 dias)
 - [ ] Notificações quando passar de um limite (ex.: 80%)
