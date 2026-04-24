@@ -12,6 +12,7 @@ contextBridge.exposeInMainWorld('claudeAPI', {
   logout:         () => ipcRenderer.send('logout'),
   minimizeWidget: () => ipcRenderer.send('minimize-widget'),
   restoreWidget:  (h) => ipcRenderer.send('restore-widget', h),
+  resizeWindow:   (h) => ipcRenderer.send('resize-window', h),
   quitApp:        () => ipcRenderer.send('quit-app'),
   onUsageData:   (cb) => ipcRenderer.on('usage-data',   (_, p) => cb(p)),
   onAuthStatus:  (cb) => ipcRenderer.on('auth-status',  (_, p) => cb(p)),

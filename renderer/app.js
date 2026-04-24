@@ -48,17 +48,38 @@ let settings       = { refreshInterval: 30, hiddenItems: [] };
 
 const ALL_CONTENT_PANELS = [authPanel, loadingState, errorState, emptyState];
 
+const HEADER_EL = document.getElementById('header');
+const FOOTER_EL = document.getElementById('footer');
+const BODY_EL   = document.getElementById('body');
+
+function autoResize() {
+  if (minimized) return;
+  requestAnimationFrame(() => {
+    const h = HEADER_EL.offsetHeight
+            + BODY_EL.scrollHeight
+            + FOOTER_EL.offsetHeight
+            + 2; // widget top+bottom border
+    const clamped = Math.max(120, Math.min(560, h));
+    if (Math.abs(clamped - fullHeight) > 1) {
+      fullHeight = clamped;
+      window.claudeAPI.resizeWindow(clamped);
+    }
+  });
+}
+
 function showPanel(panel) {
   ALL_CONTENT_PANELS.forEach(p => p.style.display = 'none');
   usageList.style.display  = 'none';
   settingsPanel.style.display = 'none';
   if (panel) panel.style.display = 'flex';
+  autoResize();
 }
 
 function showUsage() {
   ALL_CONTENT_PANELS.forEach(p => p.style.display = 'none');
   settingsPanel.style.display = 'none';
   usageList.style.display = 'flex';
+  autoResize();
 }
 
 function setStatus(state) {
@@ -174,6 +195,7 @@ function openSettings() {
   ALL_CONTENT_PANELS.forEach(p => p.style.display = 'none');
   usageList.style.display = 'none';
   settingsPanel.style.display = 'flex';
+  autoResize();
 }
 
 function closeSettings() {

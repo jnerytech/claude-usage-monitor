@@ -223,7 +223,7 @@ function createMainWindow() {
     width: winW,
     height: winH,
     minWidth: 220,
-    minHeight: 200,
+    minHeight: 120,
     x: width - winW - margin,
     y: height - winH - margin,
     frame: false,
@@ -324,8 +324,14 @@ ipcMain.on('minimize-widget', () => {
 
 ipcMain.on('restore-widget', (_, height) => {
   if (mainWindow && !mainWindow.isDestroyed()) {
-    mainWindow.setMinimumSize(220, 200);
+    mainWindow.setMinimumSize(220, 120);
     mainWindow.setSize(mainWindow.getSize()[0], height || 380);
+  }
+});
+
+ipcMain.on('resize-window', (_, height) => {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.setSize(mainWindow.getSize()[0], height);
   }
 });
 
