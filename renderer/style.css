@@ -23,7 +23,7 @@
 
 html, body {
   width: 100%;
-  height: 100%;
+  height: auto;
   overflow: hidden;
   background: transparent;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -34,7 +34,7 @@ html, body {
 
 #widget {
   width: 100%;
-  height: 100%;
+  height: auto;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -134,14 +134,13 @@ html, body {
 
 /* ── Body ── */
 #body {
-  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  min-height: 0;
+  max-height: 480px;
 }
 
 #body::-webkit-scrollbar {
@@ -162,10 +161,8 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 12px;
-  flex: 1;
-  padding: 20px;
+  padding: 28px 20px;
   text-align: center;
 }
 
@@ -271,10 +268,8 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  flex: 1;
-  padding: 20px;
+  padding: 24px 20px;
   text-align: center;
 }
 
@@ -341,8 +336,7 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 4px 2px 2px;
-  flex: 1;
+  padding: 6px 2px 4px;
 }
 
 .settings-section {
@@ -468,7 +462,7 @@ html, body {
 }
 
 #save-settings-btn {
-  margin-top: auto;
+  margin-top: 4px;
   width: 100%;
 }
 

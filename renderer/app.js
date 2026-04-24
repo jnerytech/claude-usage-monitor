@@ -48,23 +48,19 @@ let settings       = { refreshInterval: 30, hiddenItems: [] };
 
 const ALL_CONTENT_PANELS = [authPanel, loadingState, errorState, emptyState];
 
-const HEADER_EL = document.getElementById('header');
-const FOOTER_EL = document.getElementById('footer');
-const BODY_EL   = document.getElementById('body');
+const WIDGET_EL = document.getElementById('widget');
 
 function autoResize() {
   if (minimized) return;
-  requestAnimationFrame(() => {
-    const h = HEADER_EL.offsetHeight
-            + BODY_EL.scrollHeight
-            + FOOTER_EL.offsetHeight
-            + 2; // widget top+bottom border
-    const clamped = Math.max(120, Math.min(560, h));
+  // Double-raf: first frame commits style changes, second measures settled layout.
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const h = WIDGET_EL.offsetHeight;
+    const clamped = Math.max(100, Math.min(560, h));
     if (Math.abs(clamped - fullHeight) > 1) {
       fullHeight = clamped;
       window.claudeAPI.resizeWindow(clamped);
     }
-  });
+  }));
 }
 
 function showPanel(panel) {
@@ -307,12 +303,15 @@ minimizeBtn.addEventListener('click', () => {
   minimizeBtn.title     = minimized ? 'Restaurar' : 'Minimizar';
 
   if (minimized) {
-    fullHeight = window.innerHeight;
-    window.claudeAPI.minimizeWidget();
+    // snapshot current content height before hiding it
+    fullHeight = WIDGET_EL.offsetHeight;
+    window.claudeAPI.minimizeWidget(); // sets minHeight→44 + resizes window
     requestAnimationFrame(() => document.body.classList.add('minimized'));
   } else {
     document.body.classList.remove('minimized');
-    window.claudeAPI.restoreWidget(fullHeight);
+    window.claudeAPI.restoreWidget(fullHeight); // restores minHeight→120
+    // let CSS settle then resize to actual content height
+    autoResize();
   }
 });
 
