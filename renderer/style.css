@@ -26,6 +26,7 @@ html, body {
   height: auto;
   overflow: hidden;
   background: transparent;
+  padding: 4px; /* keeps border-radius away from window edge so it never gets clipped */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 13px;
   color: var(--text-primary);

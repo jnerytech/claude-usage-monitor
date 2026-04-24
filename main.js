@@ -215,8 +215,8 @@ function openLoginWindow() {
 function createMainWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
-  const winW = 280;
-  const winH = 380;
+  const winW = 288;  // 280px widget + 4px body padding × 2 sides
+  const winH = 388;
   const margin = 16;
 
   mainWindow = new BrowserWindow({
@@ -317,8 +317,8 @@ ipcMain.on('logout', async () => {
 
 ipcMain.on('minimize-widget', () => {
   if (mainWindow && !mainWindow.isDestroyed()) {
-    mainWindow.setMinimumSize(220, 44);
-    mainWindow.setSize(mainWindow.getSize()[0], 44);
+    mainWindow.setMinimumSize(220, 52); // 44px header + 4px padding × 2
+    mainWindow.setSize(mainWindow.getSize()[0], 52);
   }
 });
 

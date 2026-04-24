@@ -50,11 +50,13 @@ const ALL_CONTENT_PANELS = [authPanel, loadingState, errorState, emptyState];
 
 const WIDGET_EL = document.getElementById('widget');
 
+const BODY_PAD = 4; // px padding on each side of body (prevents border-radius clipping)
+
 function autoResize() {
   if (minimized) return;
   // Double-raf: first frame commits style changes, second measures settled layout.
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    const h = WIDGET_EL.offsetHeight;
+    const h = WIDGET_EL.offsetHeight + BODY_PAD * 2;
     const clamped = Math.max(100, Math.min(560, h));
     if (Math.abs(clamped - fullHeight) > 1) {
       fullHeight = clamped;
@@ -303,9 +305,9 @@ minimizeBtn.addEventListener('click', () => {
   minimizeBtn.title     = minimized ? 'Restaurar' : 'Minimizar';
 
   if (minimized) {
-    // snapshot current content height before hiding it
-    fullHeight = WIDGET_EL.offsetHeight;
-    window.claudeAPI.minimizeWidget(); // sets minHeight→44 + resizes window
+    // snapshot with padding so restore gets the right size
+    fullHeight = WIDGET_EL.offsetHeight + BODY_PAD * 2;
+    window.claudeAPI.minimizeWidget(); // sets minHeight→52 + resizes window
     requestAnimationFrame(() => document.body.classList.add('minimized'));
   } else {
     document.body.classList.remove('minimized');
