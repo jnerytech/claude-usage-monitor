@@ -1,0 +1,306 @@
+<div align="center">
+
+<!--
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │  IMAGEM 1 — BANNER / LOGO                                            │
+  │  Sugestão: banner horizontal (1280x320) com o logo do app,           │
+  │  fundo escuro e um mockup do widget flutuando à direita.             │
+  │  Arquivo sugerido: docs/banner.png                                   │
+  └──────────────────────────────────────────────────────────────────────┘
+-->
+<img src="docs/banner.png" alt="Claude Usage Monitor — banner" width="820"/>
+
+# Claude Usage Monitor
+
+**Widget flutuante de desktop para acompanhar em tempo real o uso do seu plano Claude.**
+
+[![Electron](https://img.shields.io/badge/Electron-28-47848F?logo=electron&logoColor=white)](https://www.electronjs.org/)
+[![Platform](https://img.shields.io/badge/Windows-x64-0078D6?logo=windows&logoColor=white)](#instalação)
+[![License](https://img.shields.io/badge/license-MIT-6E56CF.svg)](#licença)
+[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-ff9800.svg)](#roadmap)
+
+[Sobre](#-sobre) • [Funcionalidades](#-funcionalidades) • [Screenshots](#-screenshots) • [Instalação](#-instalação) • [Como usar](#-como-usar) • [Arquitetura](#-arquitetura) • [Roadmap](#-roadmap)
+
+</div>
+
+---
+
+## ✨ Sobre
+
+O **Claude Usage Monitor** é um pequeno widget de desktop, sempre visível, que mostra quanto do seu plano do [Claude](https://claude.ai) você já consumiu — sem precisar abrir o navegador e entrar em *Settings → Usage* a cada hora.
+
+Ele se conecta à sua conta Claude via uma janela de login nativa, guarda a sessão com segurança e atualiza os dados automaticamente em segundo plano.
+
+<!--
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │  IMAGEM 2 — HERO / PREVIEW PRINCIPAL                                 │
+  │  Sugestão: screenshot do widget na canto inferior direito do         │
+  │  desktop, com a janela do Claude aberta ao fundo desfocada.          │
+  │  Destaque: barras de progresso com % de uso visíveis.                │
+  │  Arquivo sugerido: docs/hero.png                                     │
+  └──────────────────────────────────────────────────────────────────────┘
+-->
+<div align="center">
+  <img src="docs/hero.png" alt="Widget em execução no desktop" width="720"/>
+</div>
+
+---
+
+## 🚀 Funcionalidades
+
+- 🪟 **Widget flutuante** — sempre no topo, sem bordas, transparente e arrastável.
+- 🔄 **Atualização automática** — recarrega os dados do servidor no intervalo que você escolher (5s a 5min).
+- ⚡ **DOM quase em tempo real** — re-lê os valores na tela a cada 2 segundos entre recargas.
+- 🔐 **Login nativo e persistente** — autentica uma vez, mantém a sessão salva com cookies seguros.
+- 🌗 **Tema claro e escuro** — combina com qualquer configuração de desktop.
+- 📊 **Múltiplas métricas** — mostra todas as barras de uso disponíveis (mensagens, Opus, Sonnet, etc.).
+- ⏱️ **Contagem regressiva** — saiba exatamente quando virá a próxima atualização.
+- 🎛️ **Filtros** — esconda métricas que você não quer ver.
+- 📉 **Minimizar / restaurar** — encolha para uma barra fina quando quiser só espiar.
+- 🖥️ **System tray** — fica discreto na bandeja do sistema; um clique mostra/oculta.
+
+---
+
+## 📸 Screenshots
+
+<!--
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │  IMAGEM 3 — WIDGET ESTADO NORMAL (TEMA ESCURO)                       │
+  │  Sugestão: captura focada apenas no widget, com 3 ou 4 barras        │
+  │  preenchidas em percentuais diferentes.                              │
+  │  Arquivo sugerido: docs/widget-dark.png                              │
+  └──────────────────────────────────────────────────────────────────────┘
+
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │  IMAGEM 4 — WIDGET ESTADO NORMAL (TEMA CLARO)                        │
+  │  Sugestão: mesma captura da anterior, mas com tema claro ativo.      │
+  │  Arquivo sugerido: docs/widget-light.png                             │
+  └──────────────────────────────────────────────────────────────────────┘
+-->
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/widget-dark.png" alt="Widget com tema escuro" width="340"/>
+      <br/><sub><b>Tema escuro</b></sub>
+    </td>
+    <td align="center">
+      <img src="docs/widget-light.png" alt="Widget com tema claro" width="340"/>
+      <br/><sub><b>Tema claro</b></sub>
+    </td>
+  </tr>
+</table>
+
+<!--
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │  IMAGEM 5 — PAINEL DE CONFIGURAÇÕES                                  │
+  │  Sugestão: widget com o painel de settings aberto, mostrando         │
+  │  escolha de tema, intervalo de recarga e filtros de consumo.         │
+  │  Arquivo sugerido: docs/settings.png                                 │
+  └──────────────────────────────────────────────────────────────────────┘
+
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │  IMAGEM 6 — JANELA DE LOGIN                                          │
+  │  Sugestão: a janela "Claude — Login" aberta com a tela oficial       │
+  │  de login do Claude.ai dentro.                                       │
+  │  Arquivo sugerido: docs/login.png                                    │
+  └──────────────────────────────────────────────────────────────────────┘
+-->
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/settings.png" alt="Painel de configurações" width="340"/>
+      <br/><sub><b>Configurações</b></sub>
+    </td>
+    <td align="center">
+      <img src="docs/login.png" alt="Janela de login" width="340"/>
+      <br/><sub><b>Login no Claude</b></sub>
+    </td>
+  </tr>
+</table>
+
+<!--
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │  IMAGEM 7 — MODO MINIMIZADO + BANDEJA DO SISTEMA                     │
+  │  Sugestão: montagem mostrando o widget encolhido em uma barra        │
+  │  fina + o ícone na system tray com o menu de contexto aberto.        │
+  │  Arquivo sugerido: docs/tray-minimized.png                           │
+  └──────────────────────────────────────────────────────────────────────┘
+-->
+<div align="center">
+  <img src="docs/tray-minimized.png" alt="Widget minimizado e ícone na bandeja" width="560"/>
+  <br/><sub><b>Minimizado + ícone na bandeja</b></sub>
+</div>
+
+---
+
+## 📦 Instalação
+
+### Opção 1 — Instalador pré-compilado (Windows)
+
+1. Vá até a seção [Releases](../../releases) do repositório.
+2. Baixe o arquivo `Claude-Usage-Monitor-Setup-x.x.x.exe`.
+3. Execute o instalador e siga os passos.
+
+### Opção 2 — A partir do código-fonte
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/jnerytech/claude-usage-monitor.git
+cd claude-usage-monitor
+
+# 2. Instale as dependências
+npm install
+
+# 3. Rode em modo desenvolvimento
+npm start
+
+# 4. (Opcional) Gere o instalador para Windows
+npm run build
+```
+
+O instalador final é gerado em `dist/`.
+
+---
+
+## 🎯 Como usar
+
+1. **Abra o app** — o widget aparece no canto inferior direito da tela.
+2. **Faça login** — clique em *Entrar no Claude* e autentique com sua conta normal.
+3. **Pronto!** — os dados de uso começam a aparecer em segundos.
+
+### Controles do widget
+
+| Ícone | Ação                                                |
+| :---: | :-------------------------------------------------- |
+|   ↻   | Atualizar agora (força uma nova busca).             |
+|   ⚙   | Abrir / fechar configurações.                       |
+|   −   | Minimizar para uma barra fina.                      |
+|   ✕   | Fechar o app (pede confirmação).                    |
+
+### Atalhos pela bandeja do sistema
+
+- **Clique simples** no ícone → mostra / oculta o widget.
+- **Clique direito** → menu com opções *Mostrar / Ocultar* e *Sair*.
+
+<!--
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │  IMAGEM 8 — GIF DEMONSTRATIVO (OPCIONAL)                             │
+  │  Sugestão: GIF curto (10–15s) mostrando o fluxo: abrir → login →     │
+  │  barras carregando → trocar tema → minimizar.                        │
+  │  Arquivo sugerido: docs/demo.gif                                     │
+  └──────────────────────────────────────────────────────────────────────┘
+-->
+<div align="center">
+  <img src="docs/demo.gif" alt="Demonstração animada" width="640"/>
+</div>
+
+---
+
+## 🏗️ Arquitetura
+
+O app é uma aplicação **Electron** simples com três janelas e um tray.
+
+```
+┌───────────────────────┐        ┌─────────────────────────┐
+│   Main Window         │        │   Hidden Window         │
+│   (widget flutuante)  │◀──IPC──│   (carrega claude.ai/   │
+│   renderer/index.html │        │    settings/usage em    │
+└───────────────────────┘        │    background)          │
+           ▲                     └─────────────────────────┘
+           │                                  │
+           │                                  │ executeJavaScript
+           │                                  ▼
+┌───────────────────────┐        ┌─────────────────────────┐
+│   Tray Icon           │        │   DOM extraction         │
+│   (mostrar/ocultar)   │        │   (progressbars, labels) │
+└───────────────────────┘        └─────────────────────────┘
+```
+
+**Estratégia de atualização** — dois timers independentes:
+
+| Timer          | Frequência           | Propósito                                          |
+| -------------- | -------------------- | -------------------------------------------------- |
+| `reloadTimer`  | configurável (5s–5min) | recarrega a página → busca dados novos do servidor |
+| `extractTimer` | 2 segundos           | re-lê o DOM já carregado → responsividade          |
+
+### Stack
+
+- [Electron 28](https://www.electronjs.org/) — runtime desktop.
+- [electron-store](https://github.com/sindresorhus/electron-store) — persistência de cookies e preferências.
+- [electron-builder](https://www.electron.build/) — empacotamento do instalador.
+- **HTML / CSS / JS puros** no renderer — sem framework, zero bundler.
+
+<!--
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │  IMAGEM 9 — DIAGRAMA DE ARQUITETURA (OPCIONAL)                       │
+  │  Sugestão: versão em imagem do diagrama acima, feita em              │
+  │  Excalidraw ou tldraw, com cores consistentes com a identidade.      │
+  │  Arquivo sugerido: docs/architecture.png                             │
+  └──────────────────────────────────────────────────────────────────────┘
+-->
+
+---
+
+## 🗂️ Estrutura do projeto
+
+```
+claude-usage-monitor/
+├── main.js              # processo principal Electron (janelas, tray, timers, IPC)
+├── preload.js           # bridge segura entre main e renderer
+├── renderer/
+│   ├── index.html       # UI do widget
+│   ├── style.css        # estilos (temas claro/escuro)
+│   └── app.js           # lógica de UI e comunicação via claudeAPI
+├── assets/              # ícones do app e do instalador
+├── package.json
+└── README.md
+```
+
+---
+
+## 🔒 Privacidade
+
+- Os cookies de sessão ficam **apenas no seu computador**, gerenciados via `electron-store`.
+- O app **não envia dados** para nenhum servidor próprio — apenas acessa `claude.ai` em seu nome.
+- Você pode sair a qualquer momento (botão *Sair*) → limpa cookies e storage local.
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Build e release automáticos via GitHub Actions
+- [ ] Suporte a macOS e Linux
+- [ ] Histórico de uso com gráfico (últimos 7 dias)
+- [ ] Notificações quando passar de um limite (ex.: 80%)
+- [ ] Atalho global configurável para mostrar/ocultar
+- [ ] Posição / tamanho do widget persistidos entre sessões
+
+---
+
+## 🤝 Contribuindo
+
+Contribuições, issues e sugestões são muito bem-vindas!
+
+1. Faça um fork do projeto.
+2. Crie sua branch: `git checkout -b feat/minha-feature`.
+3. Commit: `git commit -m 'feat: minha feature'`.
+4. Push: `git push origin feat/minha-feature`.
+5. Abra um Pull Request.
+
+---
+
+## 📄 Licença
+
+Distribuído sob a licença **MIT**. Veja [`LICENSE`](LICENSE) para mais detalhes.
+
+---
+
+<div align="center">
+
+Feito com ☕ e muito Claude por [**@jnerytech**](https://github.com/jnerytech)
+
+<sub>Este projeto não é afiliado à Anthropic. *Claude* é uma marca da Anthropic, PBC.</sub>
+
+</div>
