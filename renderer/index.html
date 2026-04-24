@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'" />
+  <title>Claude Usage Monitor</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="widget">
+
+    <!-- Header -->
+    <div id="header">
+      <span id="status-dot" class="offline" title="Status"></span>
+      <span id="title">Claude Max</span>
+      <span id="countdown" title="Próxima atualização">--:--</span>
+      <button class="icon-btn" id="refresh-btn"  title="Atualizar agora">&#x21BB;</button>
+      <button class="icon-btn" id="settings-btn" title="Configurações">&#x2699;</button>
+      <button class="icon-btn" id="minimize-btn" title="Minimizar">&#x2212;</button>
+      <button class="icon-btn danger" id="close-btn" title="Fechar">&#x2715;</button>
+    </div>
+
+    <!-- Body -->
+    <div id="body">
+
+      <!-- Auth required -->
+      <div id="auth-panel" style="display:none">
+        <p>Faça login no Claude para<br>monitorar seu uso.</p>
+        <button class="primary-btn" id="login-btn">Entrar no Claude</button>
+      </div>
+
+      <!-- Loading -->
+      <div id="loading-state" style="display:none">
+        <div class="spinner"></div>
+        <p>Carregando dados de uso&hellip;</p>
+      </div>
+
+      <!-- Error -->
+      <div id="error-state" style="display:none">
+        <p id="error-msg">Erro ao carregar dados.</p>
+        <button class="primary-btn" id="retry-btn">Tentar novamente</button>
+      </div>
+
+      <!-- Empty -->
+      <div id="empty-state" style="display:none">
+        <p>Nenhum dado de uso encontrado.<br>Pode levar alguns segundos.</p>
+      </div>
+
+      <!-- Usage list -->
+      <div id="usage-list"></div>
+
+      <!-- Settings panel -->
+      <div id="settings-panel" style="display:none">
+        <div class="settings-section">
+          <div class="settings-label">Intervalo de atualização</div>
+          <select id="interval-select" class="settings-select">
+            <option value="15">15 segundos</option>
+            <option value="30">30 segundos</option>
+            <option value="60">1 minuto</option>
+            <option value="120">2 minutos</option>
+            <option value="300">5 minutos</option>
+          </select>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-label">Consumos exibidos</div>
+          <div id="items-filter">
+            <p class="settings-hint">Carregue os dados de uso para configurar os filtros.</p>
+          </div>
+        </div>
+
+        <button class="primary-btn" id="save-settings-btn">Salvar</button>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div id="footer">
+      <span id="last-update">Aguardando dados&hellip;</span>
+      <button id="reconnect-btn" title="Sessão expirada — clique para reconectar">&#x26A0; Reconectar</button>
+    </div>
+
+    <!-- Close confirmation overlay -->
+    <div id="confirm-overlay" style="display:none">
+      <div id="confirm-box">
+        <p>Fechar o Claude Usage Monitor?</p>
+        <p class="confirm-sub">O app sairá completamente.</p>
+        <div class="confirm-actions">
+          <button class="outline-btn" id="confirm-cancel">Cancelar</button>
+          <button class="danger-btn"  id="confirm-quit">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
