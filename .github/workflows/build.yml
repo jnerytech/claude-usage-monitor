@@ -30,9 +30,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # package.json aponta para assets/icon.ico. Se o arquivo real ainda
-      # não foi commitado, geramos um placeholder aqui para o build passar.
-      # Quando o ícone real for adicionado ao repo, esta etapa é no-op.
       - name: Ensure icon placeholder
         shell: pwsh
         run: |
@@ -63,20 +60,112 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+  build-macos:
+    name: Build macOS DMG
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Ensure icon placeholder
+        run: |
+          if [ ! -f build/icon.png ]; then
+            echo "build/icon.png not found — generating placeholder."
+            mkdir -p build
+            magick -size 1024x1024 xc:"#6E56CF" \
+              -fill white -gravity center -pointsize 560 -annotate 0 "C" \
+              build/icon.png
+          else
+            echo "build/icon.png found — skipping placeholder."
+          fi
+
+      - name: Build DMG
+        run: npx electron-builder --mac --publish never
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: claude-usage-monitor-macos
+          path: |
+            dist/*.dmg
+            dist/*.dmg.blockmap
+            dist/*.zip
+            dist/latest-mac.yml
+          if-no-files-found: error
+          retention-days: 30
+
+  build-linux:
+    name: Build Linux AppImage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Ensure icon placeholder
+        run: |
+          if [ ! -f build/icon.png ]; then
+            echo "build/icon.png not found — generating placeholder."
+            mkdir -p build
+            convert -size 1024x1024 xc:"#6E56CF" \
+              -fill white -gravity center -pointsize 560 -annotate 0 "C" \
+              build/icon.png
+          else
+            echo "build/icon.png found — skipping placeholder."
+          fi
+
+      - name: Build AppImage
+        run: npx electron-builder --linux --x64 --publish never
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: claude-usage-monitor-linux-x64
+          path: |
+            dist/*.AppImage
+            dist/*.AppImage.blockmap
+            dist/latest-linux.yml
+          if-no-files-found: error
+          retention-days: 30
+
   release:
     name: Publish GitHub Release
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: build-windows
+    needs: [build-windows, build-macos, build-linux]
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-      - name: Download Windows artifact
+      - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          name: claude-usage-monitor-windows-x64
           path: dist
+          merge-multiple: true
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -84,7 +173,14 @@ jobs:
           files: |
             dist/*.exe
             dist/*.exe.blockmap
+            dist/*.dmg
+            dist/*.dmg.blockmap
+            dist/*.zip
+            dist/*.AppImage
+            dist/*.AppImage.blockmap
             dist/latest.yml
+            dist/latest-mac.yml
+            dist/latest-linux.yml
           generate_release_notes: true
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}

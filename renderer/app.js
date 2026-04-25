@@ -25,10 +25,9 @@ const settingsPanel = document.getElementById('settings-panel');
 const intervalSelect   = document.getElementById('interval-select');
 const itemsFilter      = document.getElementById('items-filter');
 const saveSettingsBtn  = document.getElementById('save-settings-btn');
+const opacitySlider    = document.getElementById('opacity-slider');
+const opacityValueEl   = document.getElementById('opacity-value');
 
-const confirmOverlay = document.getElementById('confirm-overlay');
-const confirmCancel  = document.getElementById('confirm-cancel');
-const confirmQuit    = document.getElementById('confirm-quit');
 
 // ---------------------------------------------------------------------------
 // State
@@ -40,7 +39,7 @@ let nextFetchAt    = null;
 let countdownTick  = null;
 let loggedIn       = false;
 let lastUsageData  = null;   // cache for settings filter
-let settings       = { refreshInterval: 30, hiddenItems: [], theme: 'dark' };
+let settings       = { refreshInterval: 5, hiddenItems: [], theme: 'dark', opacity: 1 };
 
 // ---------------------------------------------------------------------------
 // Panel helpers
@@ -68,6 +67,13 @@ function applyTheme(theme) {
   document.querySelectorAll('.theme-opt').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.theme === theme);
   });
+}
+
+function applyOpacity(value) {
+  WIDGET_EL.style.opacity = value;
+  const pct = Math.round(value * 100);
+  opacitySlider.value = pct;
+  opacityValueEl.textContent = `${pct}%`;
 }
 
 function showPanel(panel) {
@@ -193,7 +199,8 @@ function openSettings() {
   settingsBtn.title = 'Voltar';
 
   intervalSelect.value = String(settings.refreshInterval);
-  applyTheme(settings.theme || 'dark'); // sync buttons to current theme
+  applyTheme(settings.theme || 'dark');
+  applyOpacity(settings.opacity ?? 1);
   buildItemsFilter();
 
   ALL_CONTENT_PANELS.forEach(p => p.style.display = 'none');
@@ -228,26 +235,15 @@ async function saveSettings() {
 
   const activeThemeBtn = document.querySelector('.theme-opt.active');
   const theme = activeThemeBtn ? activeThemeBtn.dataset.theme : 'dark';
+  const opacity = parseInt(opacitySlider.value) / 100;
 
-  settings = { refreshInterval: newInterval, hiddenItems, theme };
+  settings = { refreshInterval: newInterval, hiddenItems, theme, opacity };
   await window.claudeAPI.saveSettings(settings);
 
   closeSettings();
 
   // re-render immediately with new filter
   if (lastUsageData) renderUsage(lastUsageData);
-}
-
-// ---------------------------------------------------------------------------
-// Close confirmation
-// ---------------------------------------------------------------------------
-
-function showConfirm() {
-  confirmOverlay.style.display = 'flex';
-}
-
-function hideConfirm() {
-  confirmOverlay.style.display = 'none';
 }
 
 // ---------------------------------------------------------------------------
@@ -335,9 +331,11 @@ document.querySelectorAll('.theme-opt').forEach(btn => {
   });
 });
 
-closeBtn.addEventListener('click', showConfirm);
-confirmCancel.addEventListener('click', hideConfirm);
-confirmQuit.addEventListener('click', () => window.claudeAPI.quitApp());
+opacitySlider.addEventListener('input', () => {
+  applyOpacity(parseInt(opacitySlider.value) / 100);
+});
+
+closeBtn.addEventListener('click', () => window.claudeAPI.quitApp());
 
 loginBtn.addEventListener('click', () => window.claudeAPI.openLogin());
 retryBtn.addEventListener('click', () => {
@@ -360,6 +358,7 @@ async function init() {
     ]);
 
     applyTheme(settings.theme || 'dark');
+    applyOpacity(settings.opacity ?? 1);
 
     if (loggedIn) {
       setStatus('loading');

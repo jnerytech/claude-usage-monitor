@@ -1,6 +1,6 @@
 'use strict';
 
-const { app, BrowserWindow, Tray, Menu, ipcMain, screen, session, nativeImage } = require('electron');
+const { app, BrowserWindow, Tray, Menu, ipcMain, screen, session, nativeImage, Notification } = require('electron');
 const path = require('path');
 const Store = require('electron-store');
 const { autoUpdater } = require('electron-updater');
@@ -14,8 +14,10 @@ let tray = null;
 let reloadTimer = null;  // fires at user interval → reloads the page
 let extractTimer = null; // fires every 2s → re-reads already-loaded DOM
 let nextFetchAt = null;
+let isQuitting = false;
+let trayNotificationShown = false;
 
-const DEFAULT_INTERVAL_S = 30;
+const DEFAULT_INTERVAL_S = 5;
 const RENDER_DELAY_MS = 3_000;
 const EXTRACT_INTERVAL_MS = 2_000; // how often to re-read DOM while page is loaded
 const CLAUDE_ORIGIN = 'https://claude.ai';
@@ -270,7 +272,26 @@ function createMainWindow() {
 
   mainWindow.loadFile(path.join(__dirname, 'renderer', 'index.html'));
 
-  mainWindow.on('closed', () => { mainWindow = null; });
+  mainWindow.on('close', (e) => {
+    if (!isQuitting) {
+      e.preventDefault();
+      mainWindow.hide();
+      showTrayNotification();
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Tray notification
+// ---------------------------------------------------------------------------
+
+function showTrayNotification() {
+  if (trayNotificationShown || !Notification.isSupported()) return;
+  trayNotificationShown = true;
+  new Notification({
+    title: 'Claude Usage Monitor',
+    body: 'Minimizado para a bandeja. Clique no ícone para reabrir.',
+  }).show();
 }
 
 // ---------------------------------------------------------------------------
@@ -370,7 +391,12 @@ ipcMain.handle('save-settings', (_, settings) => {
   if (hasSavedCookies()) scheduleFetch();
 });
 
-ipcMain.on('quit-app', () => app.quit());
+ipcMain.on('quit-app', () => {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.hide();
+    showTrayNotification();
+  }
+});
 
 // ---------------------------------------------------------------------------
 // App lifecycle
@@ -421,6 +447,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('before-quit', () => {
+  isQuitting = true;
   clearInterval(reloadTimer);
   clearInterval(extractTimer);
 });

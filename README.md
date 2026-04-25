@@ -16,6 +16,8 @@
 
 [![Electron](https://img.shields.io/badge/Electron-28-47848F?logo=electron&logoColor=white)](https://www.electronjs.org/)
 [![Platform](https://img.shields.io/badge/Windows-x64-0078D6?logo=windows&logoColor=white)](#instalação)
+[![Platform](https://img.shields.io/badge/macOS-x64%20%7C%20arm64-000000?logo=apple&logoColor=white)](#instalação)
+[![Platform](https://img.shields.io/badge/Linux-x64-FCC624?logo=linux&logoColor=black)](#instalação)
 [![License](https://img.shields.io/badge/license-MIT-6E56CF.svg)](#licença)
 [![Status](https://img.shields.io/badge/status-em%20desenvolvimento-ff9800.svg)](#roadmap)
 
@@ -137,14 +139,33 @@ Ele se conecta à sua conta Claude via uma janela de login nativa, guarda a sess
 
 ## 📦 Instalação
 
-### Opção 1 — Instalador pré-compilado (Windows)
+### Opção 1 — Instalador pré-compilado
 
-1. Vá até a seção [Releases](../../releases) do repositório.
-2. Baixe o arquivo `Claude-Usage-Monitor-Setup-x.x.x.exe`.
-3. Execute o instalador e siga os passos.
+Vá até a seção [Releases](../../releases) do repositório e baixe o arquivo da sua plataforma:
 
-> 💡 Também é possível baixar o instalador gerado em cada commit na aba
-> **Actions → Build → Artifacts** (`claude-usage-monitor-windows-x64`).
+| Plataforma | Arquivo | Arquitetura |
+| ---------- | ------- | ----------- |
+| Windows    | `Claude-Usage-Monitor-Setup-x.x.x.exe` | x64 |
+| macOS      | `Claude-Usage-Monitor-x.x.x.dmg` | x64 (Intel) / arm64 (Apple Silicon) |
+| Linux      | `Claude-Usage-Monitor-x.x.x.AppImage` | x64 |
+
+> 💡 Também é possível baixar os binários gerados em cada commit na aba
+> **Actions → Build → Artifacts**.
+
+#### macOS — aviso de segurança (Gatekeeper)
+
+O app não possui assinatura Apple (requer conta de desenvolvedor paga). Na primeira abertura, o macOS pode mostrar a mensagem *"app danificado"*. Para contornar, abra o Terminal e execute:
+
+```bash
+xattr -cr /Applications/Claude\ Usage\ Monitor.app
+```
+
+#### Linux — tornar o AppImage executável
+
+```bash
+chmod +x Claude-Usage-Monitor-*.AppImage
+./Claude-Usage-Monitor-*.AppImage
+```
 
 ### Opção 2 — A partir do código-fonte
 
@@ -159,7 +180,7 @@ npm install
 # 3. Rode em modo desenvolvimento
 npm start
 
-# 4. (Opcional) Gere o instalador para Windows
+# 4. (Opcional) Gere o instalador para sua plataforma atual
 npm run build
 ```
 
@@ -273,13 +294,21 @@ claude-usage-monitor/
 
 ## 🛠️ CI / Release
 
-O repositório tem um workflow [`Build`](.github/workflows/build.yml) que cuida do empacotamento:
+O repositório tem um workflow [`Build`](.github/workflows/build.yml) que compila para as três plataformas em paralelo:
 
-| Evento                         | O que acontece                                                            |
-| ------------------------------ | ------------------------------------------------------------------------- |
-| Push em `main` ou Pull Request | Build do instalador Windows e upload como **artifact** (30 dias).         |
-| Push de tag `v*` (ex.: `v1.0.0`) | Build + criação automática de uma **GitHub Release** com o `.exe` anexado. |
-| `workflow_dispatch`            | Build manual pela aba Actions.                                            |
+| Evento                           | O que acontece                                                                  |
+| -------------------------------- | ------------------------------------------------------------------------------- |
+| Push em `main` ou Pull Request   | Build Windows + macOS + Linux, upload como **artifacts** (30 dias).             |
+| Push de tag `v*` (ex.: `v1.0.0`) | Build + criação automática de **GitHub Release** com todos os instaladores.     |
+| `workflow_dispatch`              | Build manual pela aba Actions.                                                  |
+
+**Arquivos gerados por plataforma:**
+
+| Plataforma | Arquivos |
+| ---------- | -------- |
+| Windows    | `.exe`, `.exe.blockmap`, `latest.yml` |
+| macOS      | `.dmg`, `.dmg.blockmap`, `.zip`, `latest-mac.yml` |
+| Linux      | `.AppImage`, `.AppImage.blockmap`, `latest-linux.yml` |
 
 ### Publicando uma nova versão
 
@@ -289,16 +318,25 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
-A pipeline vai gerar o instalador, criar a Release e anexar os arquivos
-`.exe`, `.blockmap` e `latest.yml` (este último habilita auto-update via
-`electron-updater` no futuro).
+A pipeline compila tudo, cria a Release e anexa os arquivos de todas as plataformas.
+Os arquivos `latest*.yml` habilitam auto-update via `electron-updater` (funcional no Windows e Linux; no macOS requer assinatura Apple).
+
+### Adicionando um ícone real
+
+O CI gera um ícone placeholder roxa com "C" quando nenhum ícone real existe.
+Para usar o ícone definitivo do app:
+
+| Arquivo | Plataforma | Tamanho mínimo |
+| ------- | ---------- | -------------- |
+| `assets/icon.ico` | Windows | 256×256 |
+| `build/icon.png` | macOS / Linux | **1024×1024** (electron-builder converte para `.icns` automaticamente) |
 
 ---
 
 ## 🗺️ Roadmap
 
 - [x] Build e release automáticos via GitHub Actions
-- [ ] Suporte a macOS e Linux
+- [x] Suporte a macOS e Linux
 - [ ] Histórico de uso com gráfico (últimos 7 dias)
 - [ ] Notificações quando passar de um limite (ex.: 80%)
 - [ ] Atalho global configurável para mostrar/ocultar
