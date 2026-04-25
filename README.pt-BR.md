@@ -10,6 +10,10 @@
 [![Platform](https://img.shields.io/badge/Linux-x64-FCC624?logo=linux&logoColor=black)](#instalação)
 [![License](https://img.shields.io/badge/license-MIT-6E56CF.svg)](#licença)
 [![Status](https://img.shields.io/badge/status-ativo-4ade80.svg)](#roadmap)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jnerytech_claude-usage-monitor&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jnerytech_claude-usage-monitor)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=jnerytech_claude-usage-monitor&metric=bugs)](https://sonarcloud.io/summary/new_code?id=jnerytech_claude-usage-monitor)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=jnerytech_claude-usage-monitor&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=jnerytech_claude-usage-monitor)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=jnerytech_claude-usage-monitor&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=jnerytech_claude-usage-monitor)
 
 [Sobre](#-sobre) • [Funcionalidades](#-funcionalidades) • [Screenshots](#-screenshots) • [Instalação](#-instalação) • [Como usar](#-como-usar) • [Arquitetura](#-arquitetura) • [Roadmap](#-roadmap)
 
