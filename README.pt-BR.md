@@ -1,15 +1,5 @@
 <div align="center">
 
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 1 — BANNER / LOGO                                            │
-  │  Sugestão: banner horizontal (1280x320) com o logo do app,           │
-  │  fundo escuro e um mockup do widget flutuando à direita.             │
-  │  Arquivo sugerido: docs/banner.png                                   │
-  └──────────────────────────────────────────────────────────────────────┘
--->
-<img src="docs/banner.png" alt="Claude Usage Monitor — banner" width="820"/>
-
 # Claude Usage Monitor
 
 **Widget flutuante de desktop para acompanhar em tempo real o uso do seu plano Claude.**
@@ -35,17 +25,9 @@ O **Claude Usage Monitor** é um pequeno widget de desktop, sempre visível, que
 
 Ele se conecta à sua conta Claude via uma janela de login nativa, guarda a sessão com segurança e atualiza os dados automaticamente em segundo plano.
 
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 2 — HERO / PREVIEW PRINCIPAL                                 │
-  │  Sugestão: screenshot do widget na canto inferior direito do         │
-  │  desktop, com a janela do Claude aberta ao fundo desfocada.          │
-  │  Destaque: barras de progresso com % de uso visíveis.                │
-  │  Arquivo sugerido: docs/hero.png                                     │
-  └──────────────────────────────────────────────────────────────────────┘
--->
 <div align="center">
-  <img src="docs/hero.png" alt="Widget em execução no desktop" width="720"/>
+  <img src="docs/screenshots/realtime.png" alt="Widget espelhando a página de uso do Claude em tempo real" width="820"/>
+  <br/><sub><b>Widget espelhando a página de uso do Claude em tempo real</b></sub>
 </div>
 
 ---
@@ -69,75 +51,38 @@ Ele se conecta à sua conta Claude via uma janela de login nativa, guarda a sess
 
 ## 📸 Screenshots
 
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 3 — WIDGET ESTADO NORMAL (TEMA ESCURO)                       │
-  │  Sugestão: captura focada apenas no widget, com 3 ou 4 barras        │
-  │  preenchidas em percentuais diferentes.                              │
-  │  Arquivo sugerido: docs/widget-dark.png                              │
-  └──────────────────────────────────────────────────────────────────────┘
+<div align="center">
+  <img src="docs/screenshots/desktop.png" alt="Widget flutuando na área de trabalho do Windows" width="820"/>
+  <br/><sub><b>Sempre no topo — funciona em qualquer lugar da área de trabalho</b></sub>
+</div>
 
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 4 — WIDGET ESTADO NORMAL (TEMA CLARO)                        │
-  │  Sugestão: mesma captura da anterior, mas com tema claro ativo.      │
-  │  Arquivo sugerido: docs/widget-light.png                             │
-  └──────────────────────────────────────────────────────────────────────┘
--->
+<br/>
 
 <table>
   <tr>
     <td align="center">
-      <img src="docs/widget-dark.png" alt="Widget com tema escuro" width="340"/>
+      <img src="docs/screenshots/dark-theme.png" alt="Widget com tema escuro" width="320"/>
       <br/><sub><b>Tema escuro</b></sub>
     </td>
     <td align="center">
-      <img src="docs/widget-light.png" alt="Widget com tema claro" width="340"/>
+      <img src="docs/screenshots/light-theme.png" alt="Widget com tema claro" width="320"/>
       <br/><sub><b>Tema claro</b></sub>
     </td>
   </tr>
 </table>
 
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 5 — PAINEL DE CONFIGURAÇÕES                                  │
-  │  Sugestão: widget com o painel de settings aberto, mostrando         │
-  │  escolha de tema, intervalo de recarga e filtros de consumo.         │
-  │  Arquivo sugerido: docs/settings.png                                 │
-  └──────────────────────────────────────────────────────────────────────┘
-
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 6 — JANELA DE LOGIN                                          │
-  │  Sugestão: a janela "Claude — Login" aberta com a tela oficial       │
-  │  de login do Claude.ai dentro.                                       │
-  │  Arquivo sugerido: docs/login.png                                    │
-  └──────────────────────────────────────────────────────────────────────┘
--->
-
 <table>
   <tr>
     <td align="center">
-      <img src="docs/settings.png" alt="Painel de configurações" width="340"/>
-      <br/><sub><b>Configurações</b></sub>
+      <img src="docs/screenshots/settings.png" alt="Painel de configurações" width="320"/>
+      <br/><sub><b>Configurações — tema, transparência, intervalo de recarga, filtros de métricas</b></sub>
     </td>
     <td align="center">
-      <img src="docs/login.png" alt="Janela de login" width="340"/>
-      <br/><sub><b>Login no Claude</b></sub>
+      <img src="docs/screenshots/tray.jpg" alt="Ícone do app na bandeja do sistema" width="320"/>
+      <br/><sub><b>Ícone na bandeja do sistema</b></sub>
     </td>
   </tr>
 </table>
-
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 7 — MODO MINIMIZADO + BANDEJA DO SISTEMA                     │
-  │  Sugestão: montagem mostrando o widget encolhido em uma barra        │
-  │  fina + o ícone na system tray com o menu de contexto aberto.        │
-  │  Arquivo sugerido: docs/tray-minimized.png                           │
-  └──────────────────────────────────────────────────────────────────────┘
--->
-<div align="center">
-  <img src="docs/tray-minimized.png" alt="Widget minimizado e ícone na bandeja" width="560"/>
-  <br/><sub><b>Minimizado + ícone na bandeja</b></sub>
-</div>
 
 ---
 
@@ -211,18 +156,6 @@ O instalador final é gerado em `dist/`.
 
 - **Clique simples** no ícone → mostra / oculta o widget.
 - **Clique direito** → menu com opções *Mostrar / Ocultar* e *Sair*.
-
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 8 — GIF DEMONSTRATIVO (OPCIONAL)                             │
-  │  Sugestão: GIF curto (10–15s) mostrando o fluxo: abrir → login →     │
-  │  barras carregando → trocar tema → minimizar.                        │
-  │  Arquivo sugerido: docs/demo.gif                                     │
-  └──────────────────────────────────────────────────────────────────────┘
--->
-<div align="center">
-  <img src="docs/demo.gif" alt="Demonstração animada" width="640"/>
-</div>
 
 ---
 
@@ -315,8 +248,6 @@ O repositório tem um workflow [`Build`](.github/workflows/build.yml) que compil
 git tag v1.0.0
 git push origin v1.0.0
 ```
-
-A pipeline compila tudo, cria a Release e anexa os arquivos de todas as plataformas.
 
 ### Regenerando ícones
 

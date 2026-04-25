@@ -1,15 +1,5 @@
 <div align="center">
 
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGE 1 — BANNER / LOGO                                             │
-  │  Suggestion: horizontal banner (1280x320) with app logo,            │
-  │  dark background and a mockup of the widget floating on the right.  │
-  │  Suggested file: docs/banner.png                                     │
-  └──────────────────────────────────────────────────────────────────────┘
--->
-<img src="docs/banner.png" alt="Claude Usage Monitor — banner" width="820"/>
-
 # Claude Usage Monitor
 
 **Floating desktop widget to track your Claude plan usage in real time.**
@@ -35,17 +25,9 @@
 
 It connects to your Claude account through a native login window, stores the session securely, and refreshes data automatically in the background.
 
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGE 2 — HERO / MAIN PREVIEW                                       │
-  │  Suggestion: screenshot of the widget in the bottom-right corner of  │
-  │  the desktop, with the Claude window blurred in the background.      │
-  │  Highlight: progress bars with visible usage percentages.            │
-  │  Suggested file: docs/hero.png                                       │
-  └──────────────────────────────────────────────────────────────────────┘
--->
 <div align="center">
-  <img src="docs/hero.png" alt="Widget running on desktop" width="720"/>
+  <img src="docs/screenshots/realtime.png" alt="Widget mirroring Claude's usage page in real time" width="820"/>
+  <br/><sub><b>Widget mirroring Claude's usage page in real time</b></sub>
 </div>
 
 ---
@@ -69,75 +51,38 @@ It connects to your Claude account through a native login window, stores the ses
 
 ## 📸 Screenshots
 
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGE 3 — WIDGET NORMAL STATE (DARK THEME)                          │
-  │  Suggestion: focused capture of the widget only, with 3 or 4 bars   │
-  │  filled at different percentages.                                    │
-  │  Suggested file: docs/widget-dark.png                                │
-  └──────────────────────────────────────────────────────────────────────┘
+<div align="center">
+  <img src="docs/screenshots/desktop.png" alt="Widget floating on the Windows desktop" width="820"/>
+  <br/><sub><b>Always on top — works anywhere on your desktop</b></sub>
+</div>
 
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGE 4 — WIDGET NORMAL STATE (LIGHT THEME)                         │
-  │  Suggestion: same capture as above but with the light theme active.  │
-  │  Suggested file: docs/widget-light.png                               │
-  └──────────────────────────────────────────────────────────────────────┘
--->
+<br/>
 
 <table>
   <tr>
     <td align="center">
-      <img src="docs/widget-dark.png" alt="Widget with dark theme" width="340"/>
+      <img src="docs/screenshots/dark-theme.png" alt="Widget with dark theme" width="320"/>
       <br/><sub><b>Dark theme</b></sub>
     </td>
     <td align="center">
-      <img src="docs/widget-light.png" alt="Widget with light theme" width="340"/>
+      <img src="docs/screenshots/light-theme.png" alt="Widget with light theme" width="320"/>
       <br/><sub><b>Light theme</b></sub>
     </td>
   </tr>
 </table>
 
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGE 5 — SETTINGS PANEL                                            │
-  │  Suggestion: widget with the settings panel open, showing            │
-  │  theme choice, reload interval and usage filters.                    │
-  │  Suggested file: docs/settings.png                                   │
-  └──────────────────────────────────────────────────────────────────────┘
-
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGE 6 — LOGIN WINDOW                                              │
-  │  Suggestion: the "Claude — Login" window open with the official      │
-  │  claude.ai login screen inside.                                      │
-  │  Suggested file: docs/login.png                                      │
-  └──────────────────────────────────────────────────────────────────────┘
--->
-
 <table>
   <tr>
     <td align="center">
-      <img src="docs/settings.png" alt="Settings panel" width="340"/>
-      <br/><sub><b>Settings</b></sub>
+      <img src="docs/screenshots/settings.png" alt="Settings panel" width="320"/>
+      <br/><sub><b>Settings — theme, transparency, reload interval, metric filters</b></sub>
     </td>
     <td align="center">
-      <img src="docs/login.png" alt="Login window" width="340"/>
-      <br/><sub><b>Claude login</b></sub>
+      <img src="docs/screenshots/tray.jpg" alt="App icon in system tray" width="320"/>
+      <br/><sub><b>System tray icon</b></sub>
     </td>
   </tr>
 </table>
-
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGE 7 — MINIMIZED MODE + SYSTEM TRAY                              │
-  │  Suggestion: composite showing the widget collapsed to a slim bar    │
-  │  + the tray icon with the context menu open.                         │
-  │  Suggested file: docs/tray-minimized.png                             │
-  └──────────────────────────────────────────────────────────────────────┘
--->
-<div align="center">
-  <img src="docs/tray-minimized.png" alt="Minimized widget and tray icon" width="560"/>
-  <br/><sub><b>Minimized + tray icon</b></sub>
-</div>
 
 ---
 
@@ -211,18 +156,6 @@ The installer is generated in `dist/`.
 
 - **Single click** on the icon → show / hide the widget.
 - **Right-click** → context menu with *Show / Hide* and *Quit* options.
-
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGE 8 — DEMO GIF (OPTIONAL)                                       │
-  │  Suggestion: short GIF (10–15s) showing the flow: open → login →    │
-  │  bars loading → change theme → minimize.                             │
-  │  Suggested file: docs/demo.gif                                       │
-  └──────────────────────────────────────────────────────────────────────┘
--->
-<div align="center">
-  <img src="docs/demo.gif" alt="Animated demo" width="640"/>
-</div>
 
 ---
 
