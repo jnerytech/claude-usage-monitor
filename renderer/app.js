@@ -31,6 +31,14 @@ const opacityValueEl   = document.getElementById('opacity-value');
 
 
 // ---------------------------------------------------------------------------
+// SVG icon snippets (Feather Icons, MIT)
+// ---------------------------------------------------------------------------
+const SVG_SETTINGS   = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`;
+const SVG_BACK       = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>`;
+const SVG_MINIMIZE   = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
+const SVG_RESTORE    = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>`;
+
+// ---------------------------------------------------------------------------
 // State
 // ---------------------------------------------------------------------------
 let minimized      = false;
@@ -198,7 +206,7 @@ function buildItemsFilter() {
 
 function openSettings() {
   inSettings = true;
-  settingsBtn.innerHTML = '&#x2190;';
+  settingsBtn.innerHTML = SVG_BACK;
   settingsBtn.title = t('back');
 
   intervalSelect.value = String(settings.refreshInterval);
@@ -217,7 +225,7 @@ function openSettings() {
 
 function closeSettings() {
   inSettings = false;
-  settingsBtn.innerHTML = '&#x2699;';
+  settingsBtn.innerHTML = SVG_SETTINGS;
   settingsBtn.title = t('settingsTitle');
   settingsPanel.style.display = 'none';
 
@@ -381,7 +389,7 @@ settingsBtn.addEventListener('click', () => {
 
 minimizeBtn.addEventListener('click', () => {
   minimized = !minimized;
-  minimizeBtn.innerHTML = minimized ? '&#x25A1;' : '&#x2212;';
+  minimizeBtn.innerHTML = minimized ? SVG_RESTORE : SVG_MINIMIZE;
   minimizeBtn.title     = minimized ? t('restoreTitle') : t('minimizeTitle');
 
   if (minimized) {

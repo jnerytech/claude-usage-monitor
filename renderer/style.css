@@ -115,6 +115,7 @@ html, body {
   color: var(--text-secondary);
   font-size: 15px;
   line-height: 1;
+  -webkit-app-region: no-drag;
   padding: 2px 4px;
   border-radius: var(--radius-sm);
   transition: color 0.15s, background 0.15s;
@@ -122,6 +123,13 @@ html, body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.icon-btn svg {
+  width: 15px;
+  height: 15px;
+  display: block;
+  pointer-events: none;
 }
 
 .icon-btn:hover {
