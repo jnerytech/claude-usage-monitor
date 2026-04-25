@@ -80,7 +80,8 @@ const EXTRACT_SCRIPT = `
         const ps = Array.from(node.querySelectorAll('p'));
         if (ps.length >= 2) {
           label = ps[0].textContent.trim();
-          resetText = ps[ps.length - 1].textContent.trim();
+          const resetP = ps.find(p => /reset/i.test(p.textContent));
+          resetText = resetP ? resetP.textContent.trim() : '';
           break;
         }
         node = node.parentElement;
@@ -89,7 +90,10 @@ const EXTRACT_SCRIPT = `
       if (!label) continue;
       results.push({ label, pct, resetText });
     }
-    return results.length ? results : null;
+    if (!results.length) return null;
+    const timeEl = document.querySelector('time[datetime]');
+    const resetAt = timeEl ? timeEl.getAttribute('datetime') : null;
+    return { items: results, resetAt };
   } catch (e) {
     return { error: e.message };
   }

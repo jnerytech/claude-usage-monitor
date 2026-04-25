@@ -13,6 +13,7 @@ const loginBtn      = document.getElementById('login-btn');
 const retryBtn      = document.getElementById('retry-btn');
 const reconnectBtn  = document.getElementById('reconnect-btn');
 const lastUpdateEl  = document.getElementById('last-update');
+const resetInfoEl   = document.getElementById('reset-info');
 
 const authPanel     = document.getElementById('auth-panel');
 const loadingState  = document.getElementById('loading-state');
@@ -38,7 +39,9 @@ let inSettings     = false;
 let nextFetchAt    = null;
 let countdownTick  = null;
 let loggedIn       = false;
-let lastUsageData  = null;   // cache for settings filter
+let lastUsageData  = null;
+let lastResetMs    = null;
+let resetTick      = null;
 let settings       = { refreshInterval: 5, hiddenItems: [], theme: 'dark', opacity: 1 };
 
 // ---------------------------------------------------------------------------
@@ -247,6 +250,62 @@ async function saveSettings() {
 }
 
 // ---------------------------------------------------------------------------
+// Reset countdown
+// ---------------------------------------------------------------------------
+
+function parseResetDate(resetAt, text) {
+  if (resetAt) {
+    const d = new Date(resetAt);
+    if (!isNaN(d)) return d;
+  }
+  if (!text) return null;
+  // "Resets in 2 hr 24 min"
+  const hrMin = text.match(/in\s+(\d+)\s+hr\s+(\d+)\s+min/i);
+  if (hrMin) return new Date(Date.now() + (parseInt(hrMin[1]) * 60 + parseInt(hrMin[2])) * 60000);
+  // "Resets in X hr"
+  const hrOnly = text.match(/in\s+(\d+)\s+hr/i);
+  if (hrOnly) return new Date(Date.now() + parseInt(hrOnly[1]) * 3600000);
+  // "Resets in X min"
+  const minOnly = text.match(/in\s+(\d+)\s+min/i);
+  if (minOnly) return new Date(Date.now() + parseInt(minOnly[1]) * 60000);
+  // "Resets in X days"
+  const inDays = text.match(/in\s+(\d+)\s+day/i);
+  if (inDays) return new Date(Date.now() + parseInt(inDays[1]) * 86400000);
+  // "Resets May 1"
+  const monthDay = text.match(/(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\.?\s+\d+/i);
+  if (monthDay) {
+    const d = new Date(`${monthDay[0]} ${new Date().getFullYear()}`);
+    if (!isNaN(d)) {
+      if (d <= new Date()) d.setFullYear(d.getFullYear() + 1);
+      return d;
+    }
+  }
+  return null;
+}
+
+function formatTimeRemaining(ms) {
+  if (ms <= 0) return 'em breve';
+  const d = Math.floor(ms / 86400000);
+  const h = Math.floor((ms % 86400000) / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  if (d > 0) return `${d}d ${h}h ${m}m`;
+  if (h > 0) return `${h}h ${m}m`;
+  return `${m}m`;
+}
+
+function updateResetInfo() {
+  if (!lastResetMs) { resetInfoEl.textContent = ''; return; }
+  resetInfoEl.textContent = `Próximo reset em ${formatTimeRemaining(lastResetMs - Date.now())}`;
+}
+
+function startResetCountdown(resetDate) {
+  clearInterval(resetTick);
+  lastResetMs = resetDate ? resetDate.getTime() : null;
+  updateResetInfo();
+  if (lastResetMs) resetTick = setInterval(updateResetInfo, 30000);
+}
+
+// ---------------------------------------------------------------------------
 // IPC listeners
 // ---------------------------------------------------------------------------
 
@@ -264,8 +323,18 @@ window.claudeAPI.onUsageData((payload) => {
 
   reconnectBtn.style.display = 'none';
 
-  if (payload.data && payload.data.length) {
-    lastUsageData = payload.data;
+  const items = payload.data?.items ?? payload.data;
+  const resetAt = payload.data?.resetAt ?? null;
+
+  if (items && items.length) {
+    lastUsageData = items;
+    // Use the soonest reset among all items for the footer countdown
+    let soonest = null;
+    for (const item of items) {
+      const d = parseResetDate(null, item.resetText);
+      if (d && (!soonest || d < soonest)) soonest = d;
+    }
+    startResetCountdown(soonest || parseResetDate(resetAt, null));
     if (!inSettings) renderUsage(lastUsageData);
   } else {
     if (!inSettings) showPanel(emptyState);
