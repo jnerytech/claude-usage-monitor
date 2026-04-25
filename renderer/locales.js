@@ -75,7 +75,7 @@ const LOCALES = {
   },
 };
 
-let currentLang = 'pt-BR';
+let currentLang = 'en';
 
 function t(key) {
   return LOCALES[currentLang]?.[key] ?? LOCALES['pt-BR'][key] ?? key;

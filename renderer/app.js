@@ -50,7 +50,7 @@ let loggedIn       = false;
 let lastUsageData  = null;
 let lastResetMs    = null;
 let resetTick      = null;
-let settings       = { refreshInterval: 5, hiddenItems: [], theme: 'dark', opacity: 1, lang: 'pt-BR' };
+let settings       = { refreshInterval: 5, hiddenItems: [], theme: 'dark', opacity: 1, lang: 'en' };
 
 // ---------------------------------------------------------------------------
 // Panel helpers
@@ -450,7 +450,7 @@ async function init() {
       window.claudeAPI.getSettings(),
     ]);
 
-    setLang(settings.lang || 'pt-BR');
+    setLang(settings.lang || 'en');
     applyTranslations();
     applyTheme(settings.theme || 'dark');
     applyOpacity(settings.opacity ?? 1);

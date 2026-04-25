@@ -2,64 +2,68 @@
 
 <!--
   ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 1 — BANNER / LOGO                                            │
-  │  Sugestão: banner horizontal (1280x320) com o logo do app,           │
-  │  fundo escuro e um mockup do widget flutuando à direita.             │
-  │  Arquivo sugerido: docs/banner.png                                   │
+  │  IMAGE 1 — BANNER / LOGO                                             │
+  │  Suggestion: horizontal banner (1280x320) with app logo,            │
+  │  dark background and a mockup of the widget floating on the right.  │
+  │  Suggested file: docs/banner.png                                     │
   └──────────────────────────────────────────────────────────────────────┘
 -->
 <img src="docs/banner.png" alt="Claude Usage Monitor — banner" width="820"/>
 
 # Claude Usage Monitor
 
-**Widget flutuante de desktop para acompanhar em tempo real o uso do seu plano Claude.**
+**Floating desktop widget to track your Claude plan usage in real time.**
 
-[![Electron](https://img.shields.io/badge/Electron-28-47848F?logo=electron&logoColor=white)](https://www.electronjs.org/)
-[![Platform](https://img.shields.io/badge/Windows-x64-0078D6?logo=windows&logoColor=white)](#instalação)
-[![Platform](https://img.shields.io/badge/macOS-x64%20%7C%20arm64-000000?logo=apple&logoColor=white)](#instalação)
-[![Platform](https://img.shields.io/badge/Linux-x64-FCC624?logo=linux&logoColor=black)](#instalação)
-[![License](https://img.shields.io/badge/license-MIT-6E56CF.svg)](#licença)
-[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-ff9800.svg)](#roadmap)
+[![Electron](https://img.shields.io/badge/Electron-41-47848F?logo=electron&logoColor=white)](https://www.electronjs.org/)
+[![Platform](https://img.shields.io/badge/Windows-x64-0078D6?logo=windows&logoColor=white)](#installation)
+[![Platform](https://img.shields.io/badge/macOS-x64%20%7C%20arm64-000000?logo=apple&logoColor=white)](#installation)
+[![Platform](https://img.shields.io/badge/Linux-x64-FCC624?logo=linux&logoColor=black)](#installation)
+[![License](https://img.shields.io/badge/license-MIT-6E56CF.svg)](#license)
+[![Status](https://img.shields.io/badge/status-active-4ade80.svg)](#roadmap)
 
-[Sobre](#-sobre) • [Funcionalidades](#-funcionalidades) • [Screenshots](#-screenshots) • [Instalação](#-instalação) • [Como usar](#-como-usar) • [Arquitetura](#-arquitetura) • [Roadmap](#-roadmap)
+[About](#-about) • [Features](#-features) • [Screenshots](#-screenshots) • [Installation](#-installation) • [Usage](#-usage) • [Architecture](#-architecture) • [Roadmap](#-roadmap)
+
+🇧🇷 [Versão em Português](README.pt-BR.md)
 
 </div>
 
 ---
 
-## ✨ Sobre
+## ✨ About
 
-O **Claude Usage Monitor** é um pequeno widget de desktop, sempre visível, que mostra quanto do seu plano do [Claude](https://claude.ai) você já consumiu — sem precisar abrir o navegador e entrar em *Settings → Usage* a cada hora.
+**Claude Usage Monitor** is a small, always-on-top desktop widget that shows how much of your [Claude](https://claude.ai) plan you've already consumed — without having to open a browser and navigate to *Settings → Usage* every hour.
 
-Ele se conecta à sua conta Claude via uma janela de login nativa, guarda a sessão com segurança e atualiza os dados automaticamente em segundo plano.
+It connects to your Claude account through a native login window, stores the session securely, and refreshes data automatically in the background.
 
 <!--
   ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 2 — HERO / PREVIEW PRINCIPAL                                 │
-  │  Sugestão: screenshot do widget na canto inferior direito do         │
-  │  desktop, com a janela do Claude aberta ao fundo desfocada.          │
-  │  Destaque: barras de progresso com % de uso visíveis.                │
-  │  Arquivo sugerido: docs/hero.png                                     │
+  │  IMAGE 2 — HERO / MAIN PREVIEW                                       │
+  │  Suggestion: screenshot of the widget in the bottom-right corner of  │
+  │  the desktop, with the Claude window blurred in the background.      │
+  │  Highlight: progress bars with visible usage percentages.            │
+  │  Suggested file: docs/hero.png                                       │
   └──────────────────────────────────────────────────────────────────────┘
 -->
 <div align="center">
-  <img src="docs/hero.png" alt="Widget em execução no desktop" width="720"/>
+  <img src="docs/hero.png" alt="Widget running on desktop" width="720"/>
 </div>
 
 ---
 
-## 🚀 Funcionalidades
+## 🚀 Features
 
-- 🪟 **Widget flutuante** — sempre no topo, sem bordas, transparente e arrastável.
-- 🔄 **Atualização automática** — recarrega os dados do servidor no intervalo que você escolher (5s a 5min).
-- ⚡ **DOM quase em tempo real** — re-lê os valores na tela a cada 2 segundos entre recargas.
-- 🔐 **Login nativo e persistente** — autentica uma vez, mantém a sessão salva com cookies seguros.
-- 🌗 **Tema claro e escuro** — combina com qualquer configuração de desktop.
-- 📊 **Múltiplas métricas** — mostra todas as barras de uso disponíveis (mensagens, Opus, Sonnet, etc.).
-- ⏱️ **Contagem regressiva** — saiba exatamente quando virá a próxima atualização.
-- 🎛️ **Filtros** — esconda métricas que você não quer ver.
-- 📉 **Minimizar / restaurar** — encolha para uma barra fina quando quiser só espiar.
-- 🖥️ **System tray** — fica discreto na bandeja do sistema; um clique mostra/oculta.
+- 🪟 **Floating widget** — always on top, frameless, transparent and draggable.
+- 🔄 **Auto-refresh** — reloads server data at the interval you choose (5s to 5min).
+- ⚡ **Near real-time DOM** — re-reads on-screen values every 2 seconds between reloads.
+- 🔐 **Native persistent login** — authenticate once; session saved with secure cookies.
+- 🌗 **Light and dark themes** — matches any desktop setup.
+- 📊 **Multiple metrics** — shows all available usage bars (messages, Opus, Sonnet, etc.).
+- ⏱️ **Countdown timer** — know exactly when the next refresh is coming.
+- ⏳ **Reset countdown** — footer shows time remaining until your plan resets.
+- 🎛️ **Filters** — hide metrics you don't want to see.
+- 📉 **Minimize / restore** — collapse to a slim bar when you just want a quick glance.
+- 🖥️ **System tray** — stays discreet in the system tray; one click shows/hides the widget.
+- 🌐 **Bilingual** — English and Portuguese (pt-BR) interface.
 
 ---
 
@@ -67,305 +71,301 @@ Ele se conecta à sua conta Claude via uma janela de login nativa, guarda a sess
 
 <!--
   ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 3 — WIDGET ESTADO NORMAL (TEMA ESCURO)                       │
-  │  Sugestão: captura focada apenas no widget, com 3 ou 4 barras        │
-  │  preenchidas em percentuais diferentes.                              │
-  │  Arquivo sugerido: docs/widget-dark.png                              │
+  │  IMAGE 3 — WIDGET NORMAL STATE (DARK THEME)                          │
+  │  Suggestion: focused capture of the widget only, with 3 or 4 bars   │
+  │  filled at different percentages.                                    │
+  │  Suggested file: docs/widget-dark.png                                │
   └──────────────────────────────────────────────────────────────────────┘
 
   ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 4 — WIDGET ESTADO NORMAL (TEMA CLARO)                        │
-  │  Sugestão: mesma captura da anterior, mas com tema claro ativo.      │
-  │  Arquivo sugerido: docs/widget-light.png                             │
-  └──────────────────────────────────────────────────────────────────────┘
--->
-
-<table>
-  <tr>
-    <td align="center">
-      <img src="docs/widget-dark.png" alt="Widget com tema escuro" width="340"/>
-      <br/><sub><b>Tema escuro</b></sub>
-    </td>
-    <td align="center">
-      <img src="docs/widget-light.png" alt="Widget com tema claro" width="340"/>
-      <br/><sub><b>Tema claro</b></sub>
-    </td>
-  </tr>
-</table>
-
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 5 — PAINEL DE CONFIGURAÇÕES                                  │
-  │  Sugestão: widget com o painel de settings aberto, mostrando         │
-  │  escolha de tema, intervalo de recarga e filtros de consumo.         │
-  │  Arquivo sugerido: docs/settings.png                                 │
-  └──────────────────────────────────────────────────────────────────────┘
-
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 6 — JANELA DE LOGIN                                          │
-  │  Sugestão: a janela "Claude — Login" aberta com a tela oficial       │
-  │  de login do Claude.ai dentro.                                       │
-  │  Arquivo sugerido: docs/login.png                                    │
+  │  IMAGE 4 — WIDGET NORMAL STATE (LIGHT THEME)                         │
+  │  Suggestion: same capture as above but with the light theme active.  │
+  │  Suggested file: docs/widget-light.png                               │
   └──────────────────────────────────────────────────────────────────────┘
 -->
 
 <table>
   <tr>
     <td align="center">
-      <img src="docs/settings.png" alt="Painel de configurações" width="340"/>
-      <br/><sub><b>Configurações</b></sub>
+      <img src="docs/widget-dark.png" alt="Widget with dark theme" width="340"/>
+      <br/><sub><b>Dark theme</b></sub>
     </td>
     <td align="center">
-      <img src="docs/login.png" alt="Janela de login" width="340"/>
-      <br/><sub><b>Login no Claude</b></sub>
+      <img src="docs/widget-light.png" alt="Widget with light theme" width="340"/>
+      <br/><sub><b>Light theme</b></sub>
     </td>
   </tr>
 </table>
 
 <!--
   ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 7 — MODO MINIMIZADO + BANDEJA DO SISTEMA                     │
-  │  Sugestão: montagem mostrando o widget encolhido em uma barra        │
-  │  fina + o ícone na system tray com o menu de contexto aberto.        │
-  │  Arquivo sugerido: docs/tray-minimized.png                           │
+  │  IMAGE 5 — SETTINGS PANEL                                            │
+  │  Suggestion: widget with the settings panel open, showing            │
+  │  theme choice, reload interval and usage filters.                    │
+  │  Suggested file: docs/settings.png                                   │
+  └──────────────────────────────────────────────────────────────────────┘
+
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │  IMAGE 6 — LOGIN WINDOW                                              │
+  │  Suggestion: the "Claude — Login" window open with the official      │
+  │  claude.ai login screen inside.                                      │
+  │  Suggested file: docs/login.png                                      │
+  └──────────────────────────────────────────────────────────────────────┘
+-->
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/settings.png" alt="Settings panel" width="340"/>
+      <br/><sub><b>Settings</b></sub>
+    </td>
+    <td align="center">
+      <img src="docs/login.png" alt="Login window" width="340"/>
+      <br/><sub><b>Claude login</b></sub>
+    </td>
+  </tr>
+</table>
+
+<!--
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │  IMAGE 7 — MINIMIZED MODE + SYSTEM TRAY                              │
+  │  Suggestion: composite showing the widget collapsed to a slim bar    │
+  │  + the tray icon with the context menu open.                         │
+  │  Suggested file: docs/tray-minimized.png                             │
   └──────────────────────────────────────────────────────────────────────┘
 -->
 <div align="center">
-  <img src="docs/tray-minimized.png" alt="Widget minimizado e ícone na bandeja" width="560"/>
-  <br/><sub><b>Minimizado + ícone na bandeja</b></sub>
+  <img src="docs/tray-minimized.png" alt="Minimized widget and tray icon" width="560"/>
+  <br/><sub><b>Minimized + tray icon</b></sub>
 </div>
 
 ---
 
-## 📦 Instalação
+## 📦 Installation
 
-### Opção 1 — Instalador pré-compilado
+### Option 1 — Pre-built installer
 
-Vá até a seção [Releases](../../releases) do repositório e baixe o arquivo da sua plataforma:
+Go to the [Releases](../../releases) section and download the file for your platform:
 
-| Plataforma | Arquivo | Arquitetura |
-| ---------- | ------- | ----------- |
-| Windows    | `Claude-Usage-Monitor-Setup-x.x.x.exe` | x64 |
-| macOS      | `Claude-Usage-Monitor-x.x.x.dmg` | x64 (Intel) / arm64 (Apple Silicon) |
-| Linux      | `Claude-Usage-Monitor-x.x.x.AppImage` | x64 |
+| Platform | File | Architecture |
+| -------- | ---- | ------------ |
+| Windows  | `Claude-Usage-Monitor-Setup-x.x.x.exe` | x64 |
+| macOS    | `Claude-Usage-Monitor-x.x.x.dmg` | x64 (Intel) / arm64 (Apple Silicon) |
+| Linux    | `Claude-Usage-Monitor-x.x.x.AppImage` | x64 |
 
-> 💡 Também é possível baixar os binários gerados em cada commit na aba
-> **Actions → Build → Artifacts**.
+> 💡 You can also download binaries generated on every commit under the
+> **Actions → Build → Artifacts** tab.
 
-#### macOS — aviso de segurança (Gatekeeper)
+#### macOS — security warning (Gatekeeper)
 
-O app não possui assinatura Apple (requer conta de desenvolvedor paga). Na primeira abertura, o macOS pode mostrar a mensagem *"app danificado"*. Para contornar, abra o Terminal e execute:
+The app is not Apple-signed (requires a paid developer account). On first launch macOS may show *"app is damaged"*. To work around this, open Terminal and run:
 
 ```bash
 xattr -cr /Applications/Claude\ Usage\ Monitor.app
 ```
 
-#### Linux — tornar o AppImage executável
+#### Linux — make the AppImage executable
 
 ```bash
 chmod +x Claude-Usage-Monitor-*.AppImage
 ./Claude-Usage-Monitor-*.AppImage
 ```
 
-### Opção 2 — A partir do código-fonte
+### Option 2 — From source
 
 ```bash
-# 1. Clone o repositório
+# 1. Clone the repo
 git clone https://github.com/jnerytech/claude-usage-monitor.git
 cd claude-usage-monitor
 
-# 2. Instale as dependências
+# 2. Install dependencies
 npm install
 
-# 3. Rode em modo desenvolvimento
+# 3. Run in development mode
 npm start
 
-# 4. (Opcional) Gere o instalador para sua plataforma atual
+# 4. (Optional) Build the installer for your current platform
 npm run build
 ```
 
-O instalador final é gerado em `dist/`.
+The installer is generated in `dist/`.
 
 ---
 
-## 🎯 Como usar
+## 🎯 Usage
 
-1. **Abra o app** — o widget aparece no canto inferior direito da tela.
-2. **Faça login** — clique em *Entrar no Claude* e autentique com sua conta normal.
-3. **Pronto!** — os dados de uso começam a aparecer em segundos.
+1. **Open the app** — the widget appears in the bottom-right corner of your screen.
+2. **Sign in** — click *Sign in to Claude* and authenticate with your normal account.
+3. **Done!** — usage data starts appearing within seconds.
 
-### Controles do widget
+### Widget controls
 
-| Ícone | Ação                                                |
-| :---: | :-------------------------------------------------- |
-|   ↻   | Atualizar agora (força uma nova busca).             |
-|   ⚙   | Abrir / fechar configurações.                       |
-|   −   | Minimizar para uma barra fina.                      |
-|   ✕   | Fechar o app (pede confirmação).                    |
+| Icon | Action |
+| :--: | :----- |
+| ↻ | Refresh now (forces a new fetch). |
+| ⚙ | Open / close settings. |
+| − | Minimize to a slim bar. |
+| ✕ | Close the app. |
 
-### Atalhos pela bandeja do sistema
+### System tray shortcuts
 
-- **Clique simples** no ícone → mostra / oculta o widget.
-- **Clique direito** → menu com opções *Mostrar / Ocultar* e *Sair*.
+- **Single click** on the icon → show / hide the widget.
+- **Right-click** → context menu with *Show / Hide* and *Quit* options.
 
 <!--
   ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 8 — GIF DEMONSTRATIVO (OPCIONAL)                             │
-  │  Sugestão: GIF curto (10–15s) mostrando o fluxo: abrir → login →     │
-  │  barras carregando → trocar tema → minimizar.                        │
-  │  Arquivo sugerido: docs/demo.gif                                     │
+  │  IMAGE 8 — DEMO GIF (OPTIONAL)                                       │
+  │  Suggestion: short GIF (10–15s) showing the flow: open → login →    │
+  │  bars loading → change theme → minimize.                             │
+  │  Suggested file: docs/demo.gif                                       │
   └──────────────────────────────────────────────────────────────────────┘
 -->
 <div align="center">
-  <img src="docs/demo.gif" alt="Demonstração animada" width="640"/>
+  <img src="docs/demo.gif" alt="Animated demo" width="640"/>
 </div>
 
 ---
 
-## 🏗️ Arquitetura
+## 🏗️ Architecture
 
-O app é uma aplicação **Electron** simples com três janelas e um tray.
+The app is a simple **Electron** application with three windows and a tray.
 
 ```
 ┌───────────────────────┐        ┌─────────────────────────┐
 │   Main Window         │        │   Hidden Window         │
-│   (widget flutuante)  │◀──IPC──│   (carrega claude.ai/   │
-│   renderer/index.html │        │    settings/usage em    │
+│   (floating widget)   │◀──IPC──│   (loads claude.ai/     │
+│   renderer/index.html │        │    settings/usage in    │
 └───────────────────────┘        │    background)          │
            ▲                     └─────────────────────────┘
            │                                  │
            │                                  │ executeJavaScript
            │                                  ▼
 ┌───────────────────────┐        ┌─────────────────────────┐
-│   Tray Icon           │        │   DOM extraction         │
-│   (mostrar/ocultar)   │        │   (progressbars, labels) │
+│   Tray Icon           │        │   DOM extraction        │
+│   (show/hide)         │        │   (progress bars, %)    │
 └───────────────────────┘        └─────────────────────────┘
 ```
 
-**Estratégia de atualização** — dois timers independentes:
+**Update strategy** — two independent timers:
 
-| Timer          | Frequência           | Propósito                                          |
-| -------------- | -------------------- | -------------------------------------------------- |
-| `reloadTimer`  | configurável (5s–5min) | recarrega a página → busca dados novos do servidor |
-| `extractTimer` | 2 segundos           | re-lê o DOM já carregado → responsividade          |
+| Timer | Frequency | Purpose |
+| ----- | --------- | ------- |
+| `reloadTimer` | configurable (5s–5min) | reloads the page → fetches fresh server data |
+| `extractTimer` | 2 seconds | re-reads the already-loaded DOM → responsiveness |
 
 ### Stack
 
-- [Electron 28](https://www.electronjs.org/) — runtime desktop.
-- [electron-store](https://github.com/sindresorhus/electron-store) — persistência de cookies e preferências.
-- [electron-builder](https://www.electron.build/) — empacotamento do instalador.
-- **HTML / CSS / JS puros** no renderer — sem framework, zero bundler.
-
-<!--
-  ┌──────────────────────────────────────────────────────────────────────┐
-  │  IMAGEM 9 — DIAGRAMA DE ARQUITETURA (OPCIONAL)                       │
-  │  Sugestão: versão em imagem do diagrama acima, feita em              │
-  │  Excalidraw ou tldraw, com cores consistentes com a identidade.      │
-  │  Arquivo sugerido: docs/architecture.png                             │
-  └──────────────────────────────────────────────────────────────────────┘
--->
+- [Electron 41](https://www.electronjs.org/) — desktop runtime.
+- [electron-store](https://github.com/sindresorhus/electron-store) — cookie and preference persistence.
+- [electron-updater](https://www.electron.build/auto-update) — auto-update via GitHub Releases.
+- [electron-builder](https://www.electron.build/) — installer packaging.
+- **Plain HTML / CSS / JS** in the renderer — no framework, no bundler.
 
 ---
 
-## 🗂️ Estrutura do projeto
+## 🗂️ Project structure
 
 ```
 claude-usage-monitor/
-├── main.js              # processo principal Electron (janelas, tray, timers, IPC)
-├── preload.js           # bridge segura entre main e renderer
+├── main.js              # Electron main process (windows, tray, timers, IPC)
+├── preload.js           # secure bridge between main and renderer
 ├── renderer/
-│   ├── index.html       # UI do widget
-│   ├── style.css        # estilos (temas claro/escuro)
-│   └── app.js           # lógica de UI e comunicação via claudeAPI
-├── assets/              # ícones do app e do instalador
-├── package.json
-└── README.md
+│   ├── index.html       # widget UI
+│   ├── style.css        # styles (light/dark themes)
+│   ├── locales.js       # i18n strings (en / pt-BR)
+│   └── app.js           # UI logic and claudeAPI communication
+├── assets/              # app and installer icons
+├── build/               # 1024×1024 icon for mac/linux builds
+├── scripts/             # icon generation utilities
+└── package.json
 ```
 
 ---
 
-## 🔒 Privacidade
+## 🔒 Privacy
 
-- Os cookies de sessão ficam **apenas no seu computador**, gerenciados via `electron-store`.
-- O app **não envia dados** para nenhum servidor próprio — apenas acessa `claude.ai` em seu nome.
-- Você pode sair a qualquer momento (botão *Sair*) → limpa cookies e storage local.
+- Session cookies stay **on your machine only**, managed via `electron-store`.
+- The app **sends no data** to any proprietary server — it only accesses `claude.ai` on your behalf.
+- You can sign out at any time (tray → Quit) → clears cookies and local storage.
 
 ---
 
 ## 🛠️ CI / Release
 
-O repositório tem um workflow [`Build`](.github/workflows/build.yml) que compila para as três plataformas em paralelo:
+The repository has a [`Build`](.github/workflows/build.yml) workflow that compiles for all three platforms in parallel:
 
-| Evento                           | O que acontece                                                                  |
-| -------------------------------- | ------------------------------------------------------------------------------- |
-| Push em `main` ou Pull Request   | Build Windows + macOS + Linux, upload como **artifacts** (30 dias).             |
-| Push de tag `v*` (ex.: `v1.0.0`) | Build + criação automática de **GitHub Release** com todos os instaladores.     |
-| `workflow_dispatch`              | Build manual pela aba Actions.                                                  |
+| Event | What happens |
+| ----- | ------------ |
+| Push to `main` or Pull Request | Build Windows + macOS + Linux, upload as **artifacts** (30 days). |
+| Push of tag `v*` (e.g. `v1.0.0`) | Build + automatic **GitHub Release** creation with all installers. |
+| `workflow_dispatch` | Manual build from the Actions tab. |
 
-**Arquivos gerados por plataforma:**
+**Files generated per platform:**
 
-| Plataforma | Arquivos |
-| ---------- | -------- |
-| Windows    | `.exe`, `.exe.blockmap`, `latest.yml` |
-| macOS      | `.dmg`, `.dmg.blockmap`, `.zip`, `latest-mac.yml` |
-| Linux      | `.AppImage`, `.AppImage.blockmap`, `latest-linux.yml` |
+| Platform | Files |
+| -------- | ----- |
+| Windows  | `.exe`, `.exe.blockmap`, `latest.yml` |
+| macOS    | `.dmg`, `.dmg.blockmap`, `.zip`, `latest-mac.yml` |
+| Linux    | `.AppImage`, `.AppImage.blockmap`, `latest-linux.yml` |
 
-### Publicando uma nova versão
+### Publishing a new release
 
 ```bash
-# atualize a versão em package.json, commit, e então:
+# update version in package.json, commit, then:
 git tag v1.0.0
 git push origin v1.0.0
 ```
 
-A pipeline compila tudo, cria a Release e anexa os arquivos de todas as plataformas.
-Os arquivos `latest*.yml` habilitam auto-update via `electron-updater` (funcional no Windows e Linux; no macOS requer assinatura Apple).
+The pipeline compiles everything, creates the Release and attaches files for all platforms.
+The `latest*.yml` files enable auto-update via `electron-updater` (works on Windows and Linux; macOS requires Apple signing).
 
-### Adicionando um ícone real
+### Regenerating icons
 
-O CI gera um ícone placeholder roxa com "C" quando nenhum ícone real existe.
-Para usar o ícone definitivo do app:
+```bash
+npm run icons
+```
 
-| Arquivo | Plataforma | Tamanho mínimo |
-| ------- | ---------- | -------------- |
-| `assets/icon.ico` | Windows | 256×256 |
-| `build/icon.png` | macOS / Linux | **1024×1024** (electron-builder converte para `.icns` automaticamente) |
+Converts `build/icon.svg` → `build/icon.png` (1024px) and `assets/icon.ico`, and `assets/tray.svg` → `assets/tray.png` (32px).
 
 ---
 
 ## 🗺️ Roadmap
 
-- [x] Build e release automáticos via GitHub Actions
-- [x] Suporte a macOS e Linux
-- [ ] Histórico de uso com gráfico (últimos 7 dias)
-- [ ] Notificações quando passar de um limite (ex.: 80%)
-- [ ] Atalho global configurável para mostrar/ocultar
-- [ ] Posição / tamanho do widget persistidos entre sessões
+- [x] Automated build and release via GitHub Actions
+- [x] macOS and Linux support
+- [x] System tray with show/hide
+- [x] Reset countdown per metric
+- [x] Bilingual UI (en / pt-BR)
+- [x] Professional SVG icons
+- [ ] Usage history chart (last 7 days)
+- [ ] Notifications when a threshold is crossed (e.g. 80%)
+- [ ] Configurable global shortcut to show/hide
+- [ ] Persistent widget position and size between sessions
 
 ---
 
-## 🤝 Contribuindo
+## 🤝 Contributing
 
-Contribuições, issues e sugestões são muito bem-vindas!
+Contributions, issues and suggestions are very welcome!
 
-1. Faça um fork do projeto.
-2. Crie sua branch: `git checkout -b feat/minha-feature`.
-3. Commit: `git commit -m 'feat: minha feature'`.
-4. Push: `git push origin feat/minha-feature`.
-5. Abra um Pull Request.
+1. Fork the project.
+2. Create your branch: `git checkout -b feat/my-feature`.
+3. Commit: `git commit -m 'feat: my feature'`.
+4. Push: `git push origin feat/my-feature`.
+5. Open a Pull Request.
 
 ---
 
-## 📄 Licença
+## 📄 License
 
-Distribuído sob a licença **MIT**. Veja [`LICENSE`](LICENSE) para mais detalhes.
+Distributed under the **MIT** license. See [`LICENSE`](LICENSE) for details.
 
 ---
 
 <div align="center">
 
-Feito com ☕ e muito Claude por [**@jnerytech**](https://github.com/jnerytech)
+Made with ☕ and lots of Claude by [**@jnerytech**](https://github.com/jnerytech)
 
-<sub>Este projeto não é afiliado à Anthropic. *Claude* é uma marca da Anthropic, PBC.</sub>
+<sub>This project is not affiliated with Anthropic. *Claude* is a trademark of Anthropic, PBC.</sub>
 
 </div>
