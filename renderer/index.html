@@ -16,10 +16,10 @@
       <span id="status-dot" class="offline" title="Status"></span>
       <span id="title">Claude Max</span>
       <span id="countdown" title="Próxima atualização">--:--</span>
-      <button class="icon-btn" id="refresh-btn"  title="Atualizar agora">&#x21BB;</button>
+      <button class="icon-btn" id="refresh-btn"  data-i18n-title="refreshTitle"  title="Atualizar agora">&#x21BB;</button>
       <button class="icon-btn" id="settings-btn" title="Configurações">&#x2699;</button>
       <button class="icon-btn" id="minimize-btn" title="Minimizar">&#x2212;</button>
-      <button class="icon-btn danger" id="close-btn" title="Fechar">&#x2715;</button>
+      <button class="icon-btn danger" id="close-btn" data-i18n-title="closeTitle" title="Fechar">&#x2715;</button>
     </div>
 
     <!-- Body -->
@@ -27,25 +27,25 @@
 
       <!-- Auth required -->
       <div id="auth-panel" style="display:none">
-        <p>Faça login no Claude para<br>monitorar seu uso.</p>
-        <button class="primary-btn" id="login-btn">Entrar no Claude</button>
+        <p data-i18n="authMsg">Faça login no Claude para<br>monitorar seu uso.</p>
+        <button class="primary-btn" id="login-btn" data-i18n-text="loginBtn">Entrar no Claude</button>
       </div>
 
       <!-- Loading -->
       <div id="loading-state" style="display:none">
         <div class="spinner"></div>
-        <p>Carregando dados de uso&hellip;</p>
+        <p data-i18n-text="loadingMsg">Carregando dados de uso…</p>
       </div>
 
       <!-- Error -->
       <div id="error-state" style="display:none">
         <p id="error-msg">Erro ao carregar dados.</p>
-        <button class="primary-btn" id="retry-btn">Tentar novamente</button>
+        <button class="primary-btn" id="retry-btn" data-i18n-text="retryBtn">Tentar novamente</button>
       </div>
 
       <!-- Empty -->
       <div id="empty-state" style="display:none">
-        <p>Nenhum dado de uso encontrado.<br>Pode levar alguns segundos.</p>
+        <p data-i18n="emptyMsg">Nenhum dado de uso encontrado.<br>Pode levar alguns segundos.</p>
       </div>
 
       <!-- Usage list -->
@@ -54,15 +54,23 @@
       <!-- Settings panel -->
       <div id="settings-panel" style="display:none">
         <div class="settings-section">
-          <div class="settings-label">Tema</div>
+          <div class="settings-label" data-i18n-text="langLabel">Idioma</div>
           <div class="theme-picker">
-            <button class="theme-opt" data-theme="dark">Escuro</button>
-            <button class="theme-opt" data-theme="light">Claro</button>
+            <button class="theme-opt" data-lang="pt-BR">Português</button>
+            <button class="theme-opt" data-lang="en">English</button>
           </div>
         </div>
 
         <div class="settings-section">
-          <div class="settings-label">Transparência</div>
+          <div class="settings-label" data-i18n-text="themeLabel">Tema</div>
+          <div class="theme-picker">
+            <button class="theme-opt" data-theme="dark"  data-i18n-text="themeDark">Escuro</button>
+            <button class="theme-opt" data-theme="light" data-i18n-text="themeLight">Claro</button>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-label" data-i18n-text="opacityLabel">Transparência</div>
           <div class="opacity-row">
             <input type="range" id="opacity-slider" min="20" max="100" step="5" value="100" />
             <span id="opacity-value">100%</span>
@@ -70,26 +78,26 @@
         </div>
 
         <div class="settings-section">
-          <div class="settings-label">Recarga da página</div>
+          <div class="settings-label" data-i18n-text="intervalLabel">Recarga da página</div>
           <select id="interval-select" class="settings-select">
-            <option value="5">5 segundos</option>
-            <option value="15">15 segundos</option>
-            <option value="30">30 segundos</option>
-            <option value="60">1 minuto</option>
-            <option value="120">2 minutos</option>
-            <option value="300">5 minutos</option>
+            <option value="5"   data-i18n-text="opt5s">5 segundos</option>
+            <option value="15"  data-i18n-text="opt15s">15 segundos</option>
+            <option value="30"  data-i18n-text="opt30s">30 segundos</option>
+            <option value="60"  data-i18n-text="opt1m">1 minuto</option>
+            <option value="120" data-i18n-text="opt2m">2 minutos</option>
+            <option value="300" data-i18n-text="opt5m">5 minutos</option>
           </select>
-          <p class="settings-hint">DOM relido a cada 2s. Recarga busca dados novos do servidor.</p>
+          <p class="settings-hint" data-i18n-text="intervalHint">DOM relido a cada 2s. Recarga busca dados novos do servidor.</p>
         </div>
 
         <div class="settings-section">
-          <div class="settings-label">Consumos exibidos</div>
+          <div class="settings-label" data-i18n-text="filtersLabel">Consumos exibidos</div>
           <div id="items-filter">
-            <p class="settings-hint">Carregue os dados de uso para configurar os filtros.</p>
+            <p class="settings-hint" data-i18n-text="filtersHint">Carregue os dados de uso para configurar os filtros.</p>
           </div>
         </div>
 
-        <button class="primary-btn" id="save-settings-btn">Salvar</button>
+        <button class="primary-btn" id="save-settings-btn" data-i18n-text="saveBtn">Salvar</button>
       </div>
 
     </div>
@@ -97,8 +105,8 @@
     <!-- Footer -->
     <div id="footer">
       <div class="footer-row">
-        <span id="last-update">Aguardando dados&hellip;</span>
-        <button id="reconnect-btn" title="Sessão expirada — clique para reconectar">&#x26A0; Reconectar</button>
+        <span id="last-update" data-i18n-text="waiting">Aguardando dados…</span>
+        <button id="reconnect-btn" data-i18n-text="reconnectBtn" title="Sessão expirada — clique para reconectar">⚠ Reconectar</button>
       </div>
       <div id="reset-info"></div>
     </div>
@@ -117,6 +125,7 @@
 
   </div>
 
+  <script src="locales.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

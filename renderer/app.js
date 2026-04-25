@@ -42,7 +42,7 @@ let loggedIn       = false;
 let lastUsageData  = null;
 let lastResetMs    = null;
 let resetTick      = null;
-let settings       = { refreshInterval: 5, hiddenItems: [], theme: 'dark', opacity: 1 };
+let settings       = { refreshInterval: 5, hiddenItems: [], theme: 'dark', opacity: 1, lang: 'pt-BR' };
 
 // ---------------------------------------------------------------------------
 // Panel helpers
@@ -176,7 +176,7 @@ function buildItemsFilter() {
   itemsFilter.innerHTML = '';
 
   if (!lastUsageData || !lastUsageData.length) {
-    itemsFilter.innerHTML = '<p class="settings-hint">Carregue os dados de uso para configurar os filtros.</p>';
+    itemsFilter.innerHTML = `<p class="settings-hint">${t('filtersHint')}</p>`;
     return;
   }
 
@@ -199,11 +199,14 @@ function buildItemsFilter() {
 function openSettings() {
   inSettings = true;
   settingsBtn.innerHTML = '&#x2190;';
-  settingsBtn.title = 'Voltar';
+  settingsBtn.title = t('back');
 
   intervalSelect.value = String(settings.refreshInterval);
   applyTheme(settings.theme || 'dark');
   applyOpacity(settings.opacity ?? 1);
+  document.querySelectorAll('[data-lang]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === currentLang);
+  });
   buildItemsFilter();
 
   ALL_CONTENT_PANELS.forEach(p => p.style.display = 'none');
@@ -215,7 +218,7 @@ function openSettings() {
 function closeSettings() {
   inSettings = false;
   settingsBtn.innerHTML = '&#x2699;';
-  settingsBtn.title = 'Configurações';
+  settingsBtn.title = t('settingsTitle');
   settingsPanel.style.display = 'none';
 
   // restore previous view
@@ -236,11 +239,11 @@ async function saveSettings() {
     if (!cb.checked) hiddenItems.push(cb.dataset.label);
   });
 
-  const activeThemeBtn = document.querySelector('.theme-opt.active');
+  const activeThemeBtn = document.querySelector('.theme-opt[data-theme].active');
   const theme = activeThemeBtn ? activeThemeBtn.dataset.theme : 'dark';
   const opacity = parseInt(opacitySlider.value) / 100;
 
-  settings = { refreshInterval: newInterval, hiddenItems, theme, opacity };
+  settings = { refreshInterval: newInterval, hiddenItems, theme, opacity, lang: currentLang };
   await window.claudeAPI.saveSettings(settings);
 
   closeSettings();
@@ -284,7 +287,7 @@ function parseResetDate(resetAt, text) {
 }
 
 function formatTimeRemaining(ms) {
-  if (ms <= 0) return 'em breve';
+  if (ms <= 0) return t('soon');
   const d = Math.floor(ms / 86400000);
   const h = Math.floor((ms % 86400000) / 3600000);
   const m = Math.floor((ms % 3600000) / 60000);
@@ -295,7 +298,7 @@ function formatTimeRemaining(ms) {
 
 function updateResetInfo() {
   if (!lastResetMs) { resetInfoEl.textContent = ''; return; }
-  resetInfoEl.textContent = `Próximo reset em ${formatTimeRemaining(lastResetMs - Date.now())}`;
+  resetInfoEl.textContent = `${t('nextReset')} ${formatTimeRemaining(lastResetMs - Date.now())}`;
 }
 
 function startResetCountdown(resetDate) {
@@ -315,9 +318,9 @@ window.claudeAPI.onUsageData((payload) => {
   if (payload.error) {
     const expired = /auth|login|403/i.test(payload.error);
     if (expired) reconnectBtn.style.display = 'block';
-    errorMsg.textContent = 'Erro ao carregar dados.';
+    errorMsg.textContent = t('errorMsg');
     if (!inSettings) showPanel(errorState);
-    lastUpdateEl.textContent = `Erro às ${formatTime(payload.fetchedAt)}`;
+    lastUpdateEl.textContent = `${t('errorAt')} ${formatTime(payload.fetchedAt)}`;
     return;
   }
 
@@ -340,7 +343,7 @@ window.claudeAPI.onUsageData((payload) => {
     if (!inSettings) showPanel(emptyState);
   }
 
-  lastUpdateEl.textContent = `Atualizado às ${formatTime(payload.fetchedAt)}`;
+  lastUpdateEl.textContent = `${t('updatedAt')} ${formatTime(payload.fetchedAt)}`;
 });
 
 window.claudeAPI.onNextFetchAt((val) => {
@@ -379,7 +382,7 @@ settingsBtn.addEventListener('click', () => {
 minimizeBtn.addEventListener('click', () => {
   minimized = !minimized;
   minimizeBtn.innerHTML = minimized ? '&#x25A1;' : '&#x2212;';
-  minimizeBtn.title     = minimized ? 'Restaurar' : 'Minimizar';
+  minimizeBtn.title     = minimized ? t('restoreTitle') : t('minimizeTitle');
 
   if (minimized) {
     fullHeight = WIDGET_EL.offsetHeight;
@@ -394,7 +397,7 @@ minimizeBtn.addEventListener('click', () => {
 });
 
 // Theme picker buttons
-document.querySelectorAll('.theme-opt').forEach(btn => {
+document.querySelectorAll('.theme-opt[data-theme]').forEach(btn => {
   btn.addEventListener('click', () => {
     applyTheme(btn.dataset.theme);
   });
@@ -402,6 +405,19 @@ document.querySelectorAll('.theme-opt').forEach(btn => {
 
 opacitySlider.addEventListener('input', () => {
   applyOpacity(parseInt(opacitySlider.value) / 100);
+});
+
+document.querySelectorAll('[data-lang]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    setLang(btn.dataset.lang);
+    applyTranslations();
+    document.querySelectorAll('[data-lang]').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === currentLang);
+    });
+    settingsBtn.title = t('back');
+    minimizeBtn.title = minimized ? t('restoreTitle') : t('minimizeTitle');
+    if (lastResetMs) updateResetInfo();
+  });
 });
 
 closeBtn.addEventListener('click', () => window.claudeAPI.quitApp());
@@ -426,6 +442,8 @@ async function init() {
       window.claudeAPI.getSettings(),
     ]);
 
+    setLang(settings.lang || 'pt-BR');
+    applyTranslations();
     applyTheme(settings.theme || 'dark');
     applyOpacity(settings.opacity ?? 1);
 
