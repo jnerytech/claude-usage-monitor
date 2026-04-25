@@ -254,6 +254,10 @@ function createMainWindow() {
   const winH = 380;
   const margin = 16;
 
+  const appIcon = process.platform === 'win32'
+    ? path.join(__dirname, 'assets', 'icon.ico')
+    : path.join(__dirname, 'build',  'icon.png');
+
   mainWindow = new BrowserWindow({
     width: winW,
     height: winH,
@@ -267,6 +271,7 @@ function createMainWindow() {
     resizable: true,
     skipTaskbar: true,
     hasShadow: false,
+    icon: appIcon,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -304,7 +309,7 @@ function showTrayNotification() {
 
 function createTray() {
   // Minimal 1x1 transparent icon fallback (16x16 white square)
-  const iconPath = path.join(__dirname, 'assets', 'icon.png');
+  const iconPath = path.join(__dirname, 'assets', 'tray.png');
   let icon;
   try {
     icon = nativeImage.createFromPath(iconPath);
