@@ -31,8 +31,10 @@ const startupToggle    = document.getElementById('startup-enabled');
 const intervalSelect   = document.getElementById('interval-select');
 const itemsFilter      = document.getElementById('items-filter');
 const saveSettingsBtn  = document.getElementById('save-settings-btn');
+const saveAlertsBtn    = document.getElementById('save-alerts-btn');
 const opacitySlider    = document.getElementById('opacity-slider');
 const opacityValueEl   = document.getElementById('opacity-value');
+const settingsMenu     = document.getElementById('settings-menu');
 
 
 // ---------------------------------------------------------------------------
@@ -49,6 +51,8 @@ const SVG_RESTORE    = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColo
 let minimized      = false;
 let fullHeight     = 380;
 let inSettings     = false;
+let inSubPage      = false;
+let currentSubPage = null;
 let nextFetchAt    = null;
 let countdownTick  = null;
 let loggedIn       = false;
@@ -209,8 +213,26 @@ function buildItemsFilter() {
   });
 }
 
+function openSettingsPage(name) {
+  settingsMenu.style.display = 'none';
+  document.getElementById(`settings-sub-${name}`).style.display = 'flex';
+  inSubPage = true;
+  currentSubPage = name;
+  autoResize();
+}
+
+function closeSettingsPage() {
+  document.getElementById(`settings-sub-${currentSubPage}`).style.display = 'none';
+  settingsMenu.style.display = 'flex';
+  inSubPage = false;
+  currentSubPage = null;
+  autoResize();
+}
+
 function openSettings() {
   inSettings = true;
+  inSubPage = false;
+  currentSubPage = null;
   settingsBtn.innerHTML = SVG_BACK;
   settingsBtn.title = t('back');
 
@@ -237,6 +259,9 @@ function openSettings() {
   document.getElementById('alert-spike-enabled').checked      = sp.enabled   ?? true;
   document.getElementById('alert-spike-delta').value          = sp.deltaPct  ?? 20;
 
+  settingsMenu.style.display = 'flex';
+  document.querySelectorAll('.settings-sub').forEach(sub => { sub.style.display = 'none'; });
+
   ALL_CONTENT_PANELS.forEach(p => p.style.display = 'none');
   usageList.style.display = 'none';
   settingsPanel.style.display = 'flex';
@@ -245,6 +270,8 @@ function openSettings() {
 
 function closeSettings() {
   inSettings = false;
+  inSubPage = false;
+  currentSubPage = null;
   settingsBtn.innerHTML = SVG_SETTINGS;
   settingsBtn.title = t('settingsTitle');
   settingsPanel.style.display = 'none';
@@ -427,7 +454,8 @@ refreshBtn.addEventListener('click', () => {
 });
 
 settingsBtn.addEventListener('click', () => {
-  if (inSettings) closeSettings();
+  if (inSubPage) closeSettingsPage();
+  else if (inSettings) closeSettings();
   else openSettings();
 });
 
@@ -482,8 +510,13 @@ retryBtn.addEventListener('click', () => {
 });
 reconnectBtn.addEventListener('click', () => window.claudeAPI.openLogin());
 saveSettingsBtn.addEventListener('click', saveSettings);
+saveAlertsBtn.addEventListener('click', saveSettings);
 installUpdateBtn.addEventListener('click', () => window.claudeAPI.installUpdate());
 startupToggle.addEventListener('change', () => window.claudeAPI.setLoginItem(startupToggle.checked));
+
+document.querySelectorAll('[data-settings-page]').forEach(item => {
+  item.addEventListener('click', () => openSettingsPage(item.dataset.settingsPage));
+});
 
 document.querySelectorAll('[data-position]').forEach(btn => {
   btn.addEventListener('click', () => window.claudeAPI.setPosition(btn.dataset.position));

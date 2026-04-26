@@ -383,6 +383,48 @@ html, body {
   padding: 6px 2px 4px;
 }
 
+#settings-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.settings-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  transition: border-color 0.15s;
+}
+
+.settings-menu-item:hover {
+  border-color: var(--border-light);
+}
+
+.settings-menu-item > span {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.settings-menu-item > svg {
+  width: 14px;
+  height: 14px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.settings-sub {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 .settings-section {
   display: flex;
   flex-direction: column;
@@ -553,7 +595,7 @@ html, body {
   border-color: var(--accent-blue);
 }
 
-#save-settings-btn {
+#save-settings-btn, #save-alerts-btn {
   margin-top: 4px;
   width: 100%;
 }

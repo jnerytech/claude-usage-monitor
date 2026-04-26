@@ -61,107 +61,145 @@
 
       <!-- Settings panel -->
       <div id="settings-panel" style="display:none">
-        <div class="settings-section">
-          <div class="settings-label" data-i18n-text="langLabel">Idioma</div>
-          <div class="theme-picker">
-            <button class="theme-opt" data-lang="pt-BR">Português</button>
-            <button class="theme-opt" data-lang="en">English</button>
+
+        <!-- Category menu -->
+        <nav id="settings-menu">
+          <div class="settings-menu-item" data-settings-page="appearance">
+            <span data-i18n-text="catAppearance">Aparência</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="settings-menu-item" data-settings-page="position">
+            <span data-i18n-text="catPosition">Posição</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="settings-menu-item" data-settings-page="data">
+            <span data-i18n-text="catData">Dados</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="settings-menu-item" data-settings-page="alerts">
+            <span data-i18n-text="catAlerts">Alertas</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="settings-menu-item" data-settings-page="system">
+            <span data-i18n-text="catSystem">Sistema</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </nav>
+
+        <!-- Appearance sub-panel -->
+        <div class="settings-sub" id="settings-sub-appearance" style="display:none">
+          <div class="settings-section">
+            <div class="settings-label" data-i18n-text="langLabel">Idioma</div>
+            <div class="theme-picker">
+              <button class="theme-opt" data-lang="pt-BR">Português</button>
+              <button class="theme-opt" data-lang="en">English</button>
+            </div>
+          </div>
+          <div class="settings-section">
+            <div class="settings-label" data-i18n-text="themeLabel">Tema</div>
+            <div class="theme-picker">
+              <button class="theme-opt" data-theme="dark"  data-i18n-text="themeDark">Escuro</button>
+              <button class="theme-opt" data-theme="light" data-i18n-text="themeLight">Claro</button>
+            </div>
+          </div>
+          <div class="settings-section">
+            <div class="settings-label" data-i18n-text="opacityLabel">Transparência</div>
+            <div class="opacity-row">
+              <input type="range" id="opacity-slider" min="20" max="100" step="5" value="100" />
+              <span id="opacity-value">100%</span>
+            </div>
           </div>
         </div>
 
-        <div class="settings-section">
-          <div class="settings-label" data-i18n-text="themeLabel">Tema</div>
-          <div class="theme-picker">
-            <button class="theme-opt" data-theme="dark"  data-i18n-text="themeDark">Escuro</button>
-            <button class="theme-opt" data-theme="light" data-i18n-text="themeLight">Claro</button>
+        <!-- Position sub-panel -->
+        <div class="settings-sub" id="settings-sub-position" style="display:none">
+          <div class="settings-section">
+            <div class="theme-picker">
+              <button class="theme-opt" data-position="top-left"     data-i18n-text="posTopLeft">↖ Sup. Esq.</button>
+              <button class="theme-opt" data-position="top-right"    data-i18n-text="posTopRight">↗ Sup. Dir.</button>
+            </div>
+            <div class="theme-picker">
+              <button class="theme-opt" data-position="bottom-left"  data-i18n-text="posBottomLeft">↙ Inf. Esq.</button>
+              <button class="theme-opt" data-position="bottom-right" data-i18n-text="posBottomRight">↘ Inf. Dir.</button>
+            </div>
+            <div class="theme-picker">
+              <button class="theme-opt" data-position="monitor1" data-i18n-text="posMonitor1">Monitor 1</button>
+              <button class="theme-opt" data-position="monitor2" data-i18n-text="posMonitor2">Monitor 2</button>
+            </div>
           </div>
         </div>
 
-        <div class="settings-section">
-          <div class="settings-label" data-i18n-text="opacityLabel">Transparência</div>
-          <div class="opacity-row">
-            <input type="range" id="opacity-slider" min="20" max="100" step="5" value="100" />
-            <span id="opacity-value">100%</span>
+        <!-- Data sub-panel -->
+        <div class="settings-sub" id="settings-sub-data" style="display:none">
+          <div class="settings-section">
+            <div class="settings-label" data-i18n-text="intervalLabel">Recarga da página</div>
+            <select id="interval-select" class="settings-select">
+              <option value="5"   data-i18n-text="opt5s">5 segundos</option>
+              <option value="15"  data-i18n-text="opt15s">15 segundos</option>
+              <option value="30"  data-i18n-text="opt30s">30 segundos</option>
+              <option value="60"  data-i18n-text="opt1m">1 minuto</option>
+              <option value="120" data-i18n-text="opt2m">2 minutos</option>
+              <option value="300" data-i18n-text="opt5m">5 minutos</option>
+            </select>
+            <p class="settings-hint" data-i18n-text="intervalHint">DOM relido a cada 2s. Recarga busca dados novos do servidor.</p>
+          </div>
+          <div class="settings-section">
+            <div class="settings-label" data-i18n-text="filtersLabel">Consumos exibidos</div>
+            <div id="items-filter">
+              <p class="settings-hint" data-i18n-text="filtersHint">Carregue os dados de uso para configurar os filtros.</p>
+            </div>
+          </div>
+          <button class="primary-btn" id="save-settings-btn" data-i18n-text="saveBtn">Salvar</button>
+        </div>
+
+        <!-- Alerts sub-panel -->
+        <div class="settings-sub" id="settings-sub-alerts" style="display:none">
+          <div class="settings-section">
+            <div class="alert-row">
+              <span class="toggle"><input type="checkbox" id="alert-threshold-enabled"><span class="toggle-track"></span></span>
+              <span class="alert-row-label" data-i18n-text="alertThreshold">Uso alto</span>
+              <span class="alert-row-inputs">
+                <input type="number" id="alert-threshold-pct" class="alert-num" min="50" max="99" value="80">
+                <span>%</span>
+              </span>
+            </div>
+            <div class="alert-row">
+              <span class="toggle"><input type="checkbox" id="alert-nearreset-enabled"><span class="toggle-track"></span></span>
+              <span class="alert-row-label" data-i18n-text="alertNearReset">Próximo ao reset</span>
+              <span class="alert-row-inputs">
+                <input type="number" id="alert-nearreset-mins" class="alert-num" min="5" max="120" value="30">
+                <span>m</span>
+                <input type="number" id="alert-nearreset-pct" class="alert-num" min="50" max="99" value="75">
+                <span>%</span>
+              </span>
+            </div>
+            <div class="alert-row">
+              <span class="toggle"><input type="checkbox" id="alert-planreset-enabled"><span class="toggle-track"></span></span>
+              <span class="alert-row-label" data-i18n-text="alertPlanReset">Reset do plano</span>
+            </div>
+            <div class="alert-row">
+              <span class="toggle"><input type="checkbox" id="alert-spike-enabled"><span class="toggle-track"></span></span>
+              <span class="alert-row-label" data-i18n-text="alertSpike">Pico de uso</span>
+              <span class="alert-row-inputs">
+                <input type="number" id="alert-spike-delta" class="alert-num" min="5" max="50" value="20">
+                <span>%</span>
+              </span>
+            </div>
+          </div>
+          <button class="primary-btn" id="save-alerts-btn" data-i18n-text="saveBtn">Salvar</button>
+        </div>
+
+        <!-- System sub-panel -->
+        <div class="settings-sub" id="settings-sub-system" style="display:none">
+          <div class="settings-section">
+            <div class="settings-label" data-i18n-text="startupLabel">Inicialização</div>
+            <label class="alert-row">
+              <span class="toggle"><input type="checkbox" id="startup-enabled"><span class="toggle-track"></span></span>
+              <span class="alert-row-label" data-i18n-text="startupDesc">Iniciar com o sistema</span>
+            </label>
           </div>
         </div>
 
-        <div class="settings-section">
-          <div class="settings-label" data-i18n-text="positionLabel">Posição</div>
-          <div class="theme-picker">
-            <button class="theme-opt" data-position="top-left"  data-i18n-text="posTopLeft">↖ Sup. Esq.</button>
-            <button class="theme-opt" data-position="top"       data-i18n-text="posTop">↑ Superior</button>
-            <button class="theme-opt" data-position="top-right" data-i18n-text="posTopRight">↗ Sup. Dir.</button>
-          </div>
-          <div class="theme-picker">
-            <button class="theme-opt" data-position="monitor1" data-i18n-text="posMonitor1">Monitor 1</button>
-            <button class="theme-opt" data-position="bottom"   data-i18n-text="posBottom">↓ Inferior</button>
-            <button class="theme-opt" data-position="monitor2" data-i18n-text="posMonitor2">Monitor 2</button>
-          </div>
-        </div>
-
-        <div class="settings-section">
-          <div class="settings-label" data-i18n-text="intervalLabel">Recarga da página</div>
-          <select id="interval-select" class="settings-select">
-            <option value="5"   data-i18n-text="opt5s">5 segundos</option>
-            <option value="15"  data-i18n-text="opt15s">15 segundos</option>
-            <option value="30"  data-i18n-text="opt30s">30 segundos</option>
-            <option value="60"  data-i18n-text="opt1m">1 minuto</option>
-            <option value="120" data-i18n-text="opt2m">2 minutos</option>
-            <option value="300" data-i18n-text="opt5m">5 minutos</option>
-          </select>
-          <p class="settings-hint" data-i18n-text="intervalHint">DOM relido a cada 2s. Recarga busca dados novos do servidor.</p>
-        </div>
-
-        <div class="settings-section">
-          <div class="settings-label" data-i18n-text="startupLabel">Inicialização</div>
-          <label class="alert-row">
-            <span class="toggle"><input type="checkbox" id="startup-enabled"><span class="toggle-track"></span></span>
-            <span class="alert-row-label" data-i18n-text="startupDesc">Iniciar com o sistema</span>
-          </label>
-        </div>
-
-        <div class="settings-section">
-          <div class="settings-label" data-i18n-text="filtersLabel">Consumos exibidos</div>
-          <div id="items-filter">
-            <p class="settings-hint" data-i18n-text="filtersHint">Carregue os dados de uso para configurar os filtros.</p>
-          </div>
-        </div>
-
-        <div class="settings-section">
-          <div class="settings-label" data-i18n-text="alertsLabel">Alertas</div>
-          <div class="alert-row">
-            <span class="toggle"><input type="checkbox" id="alert-threshold-enabled"><span class="toggle-track"></span></span>
-            <span class="alert-row-label" data-i18n-text="alertThreshold">Uso alto</span>
-            <span class="alert-row-inputs">
-              <input type="number" id="alert-threshold-pct" class="alert-num" min="50" max="99" value="80">
-              <span>%</span>
-            </span>
-          </div>
-          <div class="alert-row">
-            <span class="toggle"><input type="checkbox" id="alert-nearreset-enabled"><span class="toggle-track"></span></span>
-            <span class="alert-row-label" data-i18n-text="alertNearReset">Próximo ao reset</span>
-            <span class="alert-row-inputs">
-              <input type="number" id="alert-nearreset-mins" class="alert-num" min="5" max="120" value="30">
-              <span>m</span>
-              <input type="number" id="alert-nearreset-pct" class="alert-num" min="50" max="99" value="75">
-              <span>%</span>
-            </span>
-          </div>
-          <div class="alert-row">
-            <span class="toggle"><input type="checkbox" id="alert-planreset-enabled"><span class="toggle-track"></span></span>
-            <span class="alert-row-label" data-i18n-text="alertPlanReset">Reset do plano</span>
-          </div>
-          <div class="alert-row">
-            <span class="toggle"><input type="checkbox" id="alert-spike-enabled"><span class="toggle-track"></span></span>
-            <span class="alert-row-label" data-i18n-text="alertSpike">Pico de uso</span>
-            <span class="alert-row-inputs">
-              <input type="number" id="alert-spike-delta" class="alert-num" min="5" max="50" value="20">
-              <span>%</span>
-            </span>
-          </div>
-        </div>
-
-        <button class="primary-btn" id="save-settings-btn" data-i18n-text="saveBtn">Salvar</button>
       </div>
 
     </div>

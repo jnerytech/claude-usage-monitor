@@ -449,15 +449,13 @@ function applyPositionPreset(preset) {
 
   switch (preset) {
     case 'top-left':
-      wx = dx + margin; wy = dy + margin; break;
-    case 'top':
-      wx = dx + Math.round((dw - winW) / 2); wy = dy + margin; break;
+      wx = dx + margin;              wy = dy + margin;              break;
     case 'top-right':
-      wx = dx + dw - winW - margin; wy = dy + margin; break;
-    case 'bottom':
-      wx = dx + Math.round((dw - winW) / 2); wy = dy + dh - winH - margin; break;
-    default: // monitor1, monitor2 → bottom-right of target display
-      wx = dx + dw - winW - margin; wy = dy + dh - winH - margin; break;
+      wx = dx + dw - winW - margin;  wy = dy + margin;              break;
+    case 'bottom-left':
+      wx = dx + margin;              wy = dy + dh - winH - margin;  break;
+    default: // bottom-right, monitor1, monitor2
+      wx = dx + dw - winW - margin;  wy = dy + dh - winH - margin;  break;
   }
 
   mainWindow.setPosition(wx, wy);
