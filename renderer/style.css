@@ -482,6 +482,54 @@ html, body {
   transform: translateX(12px);
 }
 
+.alert-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 9px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  -webkit-app-region: no-drag;
+  transition: border-color 0.15s;
+}
+
+.alert-row:hover {
+  border-color: var(--border-light);
+}
+
+.alert-row-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.alert-row-inputs {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.alert-num {
+  width: 36px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 11px;
+  padding: 2px 4px;
+  text-align: center;
+  outline: none;
+  -webkit-app-region: no-drag;
+}
+
+.alert-num:focus {
+  border-color: var(--accent-blue);
+}
+
 #save-settings-btn {
   margin-top: 4px;
   width: 100%;

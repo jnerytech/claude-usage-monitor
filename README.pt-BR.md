@@ -50,6 +50,7 @@ Ele se conecta à sua conta Claude via uma janela de login nativa, guarda a sess
 - 📉 **Minimizar / restaurar** — encolha para uma barra fina quando quiser só espiar.
 - 🖥️ **System tray** — fica discreto na bandeja do sistema; um clique mostra/oculta.
 - 🌐 **Bilíngue** — interface em inglês e português (pt-BR).
+- 🔔 **Alertas** — notificações de desktop quando o uso passa de um limite, o reset está próximo, o plano reinicia ou há um pico de consumo.
 
 ---
 
@@ -146,6 +147,19 @@ O instalador final é gerado em `dist/`.
 1. **Abra o app** — o widget aparece no canto inferior direito da tela.
 2. **Faça login** — clique em *Sign in to Claude* e autentique com sua conta normal.
 3. **Pronto!** — os dados de uso começam a aparecer em segundos.
+
+### Notificações de alerta
+
+Configure em **Configurações → Alertas**. Cada tipo é ativado de forma independente:
+
+| Alerta | Condição | Padrão |
+| ------ | -------- | ------ |
+| **Uso alto** | Métrica atinge X% | 80% |
+| **Próximo ao reset** | ≤ N min restantes e uso ≥ M% | 30 min / 75% |
+| **Reset do plano** | Uso cai de ≥ 50% para ≤ 10% | ativado |
+| **Pico de uso** | Uso sobe ≥ X% em um único refresh | 20% |
+
+Os alertas se rearmam automaticamente depois que o uso cai abaixo do limite.
 
 ### Controles do widget
 
@@ -271,8 +285,8 @@ Converte `build/icon.svg` → `build/icon.png` (1024px) e `assets/icon.ico`, e `
 - [x] Countdown de reset por métrica
 - [x] Interface bilíngue (en / pt-BR)
 - [x] Ícones SVG profissionais
+- [x] Alertas — uso alto, próximo ao reset, reset do plano, pico de consumo (limites configuráveis)
 - [ ] Histórico de uso com gráfico (últimos 7 dias)
-- [ ] Notificações quando passar de um limite (ex.: 80%)
 - [ ] Atalho global configurável para mostrar/ocultar
 - [ ] Posição / tamanho do widget persistidos entre sessões
 

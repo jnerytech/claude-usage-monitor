@@ -50,6 +50,7 @@ It connects to your Claude account through a native login window, stores the ses
 - 📉 **Minimize / restore** — collapse to a slim bar when you just want a quick glance.
 - 🖥️ **System tray** — stays discreet in the system tray; one click shows/hides the widget.
 - 🌐 **Bilingual** — English and Portuguese (pt-BR) interface.
+- 🔔 **Alerts** — desktop notifications when usage crosses a threshold, reset is near, plan resets, or consumption spikes.
 
 ---
 
@@ -146,6 +147,19 @@ The installer is generated in `dist/`.
 1. **Open the app** — the widget appears in the bottom-right corner of your screen.
 2. **Sign in** — click *Sign in to Claude* and authenticate with your normal account.
 3. **Done!** — usage data starts appearing within seconds.
+
+### Alert notifications
+
+Configure in **Settings → Alerts**. Each type is toggled independently:
+
+| Alert | Condition | Default |
+| ----- | --------- | ------- |
+| **High usage** | Metric reaches X% | 80% |
+| **Near reset** | ≤ N min left and usage ≥ M% | 30 min / 75% |
+| **Plan reset** | Usage drops from ≥ 50% to ≤ 10% | on |
+| **Usage spike** | Usage jumps ≥ X% in one refresh | 20% |
+
+Alerts re-arm automatically after usage falls back below the threshold.
 
 ### Widget controls
 
@@ -274,8 +288,8 @@ Converts `build/icon.svg` → `build/icon.png` (1024px) and `assets/icon.ico`, a
 - [x] Reset countdown per metric
 - [x] Bilingual UI (en / pt-BR)
 - [x] Professional SVG icons
+- [x] Alerts — high usage, near reset, plan reset, usage spike (configurable thresholds)
 - [ ] Usage history chart (last 7 days)
-- [ ] Notifications when a threshold is crossed (e.g. 80%)
 - [ ] Configurable global shortcut to show/hide
 - [ ] Persistent widget position and size between sessions
 

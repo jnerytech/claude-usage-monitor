@@ -105,6 +105,40 @@
           </div>
         </div>
 
+        <div class="settings-section">
+          <div class="settings-label" data-i18n-text="alertsLabel">Alertas</div>
+          <div class="alert-row">
+            <span class="toggle"><input type="checkbox" id="alert-threshold-enabled"><span class="toggle-track"></span></span>
+            <span class="alert-row-label" data-i18n-text="alertThreshold">Uso alto</span>
+            <span class="alert-row-inputs">
+              <input type="number" id="alert-threshold-pct" class="alert-num" min="50" max="99" value="80">
+              <span>%</span>
+            </span>
+          </div>
+          <div class="alert-row">
+            <span class="toggle"><input type="checkbox" id="alert-nearreset-enabled"><span class="toggle-track"></span></span>
+            <span class="alert-row-label" data-i18n-text="alertNearReset">Próximo ao reset</span>
+            <span class="alert-row-inputs">
+              <input type="number" id="alert-nearreset-mins" class="alert-num" min="5" max="120" value="30">
+              <span>m</span>
+              <input type="number" id="alert-nearreset-pct" class="alert-num" min="50" max="99" value="75">
+              <span>%</span>
+            </span>
+          </div>
+          <div class="alert-row">
+            <span class="toggle"><input type="checkbox" id="alert-planreset-enabled"><span class="toggle-track"></span></span>
+            <span class="alert-row-label" data-i18n-text="alertPlanReset">Reset do plano</span>
+          </div>
+          <div class="alert-row">
+            <span class="toggle"><input type="checkbox" id="alert-spike-enabled"><span class="toggle-track"></span></span>
+            <span class="alert-row-label" data-i18n-text="alertSpike">Pico de uso</span>
+            <span class="alert-row-inputs">
+              <input type="number" id="alert-spike-delta" class="alert-num" min="5" max="50" value="20">
+              <span>%</span>
+            </span>
+          </div>
+        </div>
+
         <button class="primary-btn" id="save-settings-btn" data-i18n-text="saveBtn">Salvar</button>
       </div>
 

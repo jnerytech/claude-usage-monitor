@@ -16,6 +16,7 @@ let extractTimer = null; // fires every 2s → re-reads already-loaded DOM
 let nextFetchAt = null;
 let isQuitting = false;
 let trayNotificationShown = false;
+let alertState = { thresholdFired: {}, nearResetFired: {}, prevPct: {} };
 
 const DEFAULT_INTERVAL_S = 5;
 const RENDER_DELAY_MS = 3_000;
@@ -119,6 +120,9 @@ async function extractOnce() {
   if (hiddenWindow.webContents.isLoading()) return;
   try {
     const data = await hiddenWindow.webContents.executeJavaScript(EXTRACT_SCRIPT);
+    if (data && data.items) {
+      checkAlerts(data.items, store.get('settings', {}));
+    }
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.webContents.send('usage-data', { data, fetchedAt: Date.now() });
     }
@@ -288,6 +292,74 @@ function createMainWindow() {
       showTrayNotification();
     }
   });
+}
+
+// ---------------------------------------------------------------------------
+// Alert system
+// ---------------------------------------------------------------------------
+
+function notify(title, body) {
+  if (!Notification.isSupported()) return;
+  new Notification({ title: `Claude Usage Monitor — ${title}`, body }).show();
+}
+
+function parseResetMins(text) {
+  if (!text) return null;
+  const hrMin = text.match(/in\s+(\d+)\s+hr\s+(\d+)\s+min/i);
+  if (hrMin) return parseInt(hrMin[1]) * 60 + parseInt(hrMin[2]);
+  const hrOnly = text.match(/in\s+(\d+)\s+hr/i);
+  if (hrOnly) return parseInt(hrOnly[1]) * 60;
+  const minOnly = text.match(/in\s+(\d+)\s+min/i);
+  if (minOnly) return parseInt(minOnly[1]);
+  const daysOnly = text.match(/in\s+(\d+)\s+day/i);
+  if (daysOnly) return parseInt(daysOnly[1]) * 1440;
+  return null;
+}
+
+function checkAlerts(items, settings) {
+  if (!settings.alerts) return;
+  const { alerts } = settings;
+
+  for (const item of items) {
+    const { label, pct, resetText } = item;
+    const prev = alertState.prevPct[label] ?? pct;
+
+    if (alerts.threshold?.enabled) {
+      const thr = alerts.threshold.pct;
+      if (pct >= thr && !alertState.thresholdFired[label]) {
+        notify(label, `Usage at ${pct}% (threshold: ${thr}%)`);
+        alertState.thresholdFired[label] = true;
+      }
+      if (pct < thr - 5) alertState.thresholdFired[label] = false;
+    }
+
+    if (alerts.nearReset?.enabled) {
+      const minsLeft = parseResetMins(resetText);
+      if (minsLeft !== null) {
+        const { minutesLeft, minPct } = alerts.nearReset;
+        if (minsLeft <= minutesLeft && pct >= minPct && !alertState.nearResetFired[label]) {
+          notify(`${label} — reset soon`, `${pct}% used, ${Math.round(minsLeft)} min remaining`);
+          alertState.nearResetFired[label] = true;
+        }
+        if (pct <= 10) alertState.nearResetFired[label] = false;
+      }
+    }
+
+    if (alerts.planReset?.enabled) {
+      if (prev >= 50 && pct <= 10) {
+        notify(`${label} reset`, `Limit renewed — usage now at ${pct}%`);
+      }
+    }
+
+    if (alerts.spike?.enabled) {
+      const delta = pct - prev;
+      if (delta >= alerts.spike.deltaPct) {
+        notify(`${label} — usage spike`, `+${delta}% in one refresh (${pct}% total)`);
+      }
+    }
+
+    alertState.prevPct[label] = pct;
+  }
 }
 
 // ---------------------------------------------------------------------------

@@ -50,7 +50,7 @@ let loggedIn       = false;
 let lastUsageData  = null;
 let lastResetMs    = null;
 let resetTick      = null;
-let settings       = { refreshInterval: 5, hiddenItems: [], theme: 'dark', opacity: 1, lang: 'en' };
+let settings       = { refreshInterval: 5, hiddenItems: [], theme: 'dark', opacity: 1, lang: 'en', alerts: { threshold: { enabled: true, pct: 80 }, nearReset: { enabled: true, minutesLeft: 30, minPct: 75 }, planReset: { enabled: true }, spike: { enabled: true, deltaPct: 20 } } };
 
 // ---------------------------------------------------------------------------
 // Panel helpers
@@ -217,6 +217,20 @@ function openSettings() {
   });
   buildItemsFilter();
 
+  const a = settings.alerts || {};
+  const thr = a.threshold || {};
+  const nr  = a.nearReset  || {};
+  const pr  = a.planReset  || {};
+  const sp  = a.spike      || {};
+  document.getElementById('alert-threshold-enabled').checked  = thr.enabled  ?? true;
+  document.getElementById('alert-threshold-pct').value        = thr.pct       ?? 80;
+  document.getElementById('alert-nearreset-enabled').checked  = nr.enabled   ?? true;
+  document.getElementById('alert-nearreset-mins').value       = nr.minutesLeft ?? 30;
+  document.getElementById('alert-nearreset-pct').value        = nr.minPct    ?? 75;
+  document.getElementById('alert-planreset-enabled').checked  = pr.enabled   ?? true;
+  document.getElementById('alert-spike-enabled').checked      = sp.enabled   ?? true;
+  document.getElementById('alert-spike-delta').value          = sp.deltaPct  ?? 20;
+
   ALL_CONTENT_PANELS.forEach(p => p.style.display = 'none');
   usageList.style.display = 'none';
   settingsPanel.style.display = 'flex';
@@ -251,7 +265,25 @@ async function saveSettings() {
   const theme = activeThemeBtn ? activeThemeBtn.dataset.theme : 'dark';
   const opacity = parseInt(opacitySlider.value) / 100;
 
-  settings = { refreshInterval: newInterval, hiddenItems, theme, opacity, lang: currentLang };
+  const alerts = {
+    threshold: {
+      enabled: document.getElementById('alert-threshold-enabled').checked,
+      pct:     parseInt(document.getElementById('alert-threshold-pct').value),
+    },
+    nearReset: {
+      enabled:     document.getElementById('alert-nearreset-enabled').checked,
+      minutesLeft: parseInt(document.getElementById('alert-nearreset-mins').value),
+      minPct:      parseInt(document.getElementById('alert-nearreset-pct').value),
+    },
+    planReset: {
+      enabled: document.getElementById('alert-planreset-enabled').checked,
+    },
+    spike: {
+      enabled:  document.getElementById('alert-spike-enabled').checked,
+      deltaPct: parseInt(document.getElementById('alert-spike-delta').value),
+    },
+  };
+  settings = { refreshInterval: newInterval, hiddenItems, theme, opacity, lang: currentLang, alerts };
   await window.claudeAPI.saveSettings(settings);
 
   closeSettings();
