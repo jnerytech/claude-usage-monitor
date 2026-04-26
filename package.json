@@ -1,6 +1,6 @@
 {
   "name": "claude-usage-monitor",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Claude usage monitor floating desktop widget",
   "main": "main.js",
   "scripts": {
