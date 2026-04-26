@@ -423,6 +423,47 @@ function toggleMainWindow() {
 }
 
 // ---------------------------------------------------------------------------
+// Position presets
+// ---------------------------------------------------------------------------
+
+function applyPositionPreset(preset) {
+  if (!mainWindow || mainWindow.isDestroyed()) return;
+
+  const margin = 16;
+  const [winW, winH] = mainWindow.getSize();
+  const displays = screen.getAllDisplays();
+  const primary = screen.getPrimaryDisplay();
+
+  let display;
+  if (preset === 'monitor1') {
+    display = primary;
+  } else if (preset === 'monitor2') {
+    display = displays.find(d => d.id !== primary.id) ?? primary;
+  } else {
+    const { x, y } = mainWindow.getBounds();
+    display = screen.getDisplayNearestPoint({ x, y });
+  }
+
+  const { x: dx, y: dy, width: dw, height: dh } = display.workArea;
+  let wx, wy;
+
+  switch (preset) {
+    case 'top-left':
+      wx = dx + margin; wy = dy + margin; break;
+    case 'top':
+      wx = dx + Math.round((dw - winW) / 2); wy = dy + margin; break;
+    case 'top-right':
+      wx = dx + dw - winW - margin; wy = dy + margin; break;
+    case 'bottom':
+      wx = dx + Math.round((dw - winW) / 2); wy = dy + dh - winH - margin; break;
+    default: // monitor1, monitor2 → bottom-right of target display
+      wx = dx + dw - winW - margin; wy = dy + dh - winH - margin; break;
+  }
+
+  mainWindow.setPosition(wx, wy);
+}
+
+// ---------------------------------------------------------------------------
 // IPC handlers
 // ---------------------------------------------------------------------------
 
@@ -511,6 +552,8 @@ function setupAutoUpdater() {
 }
 
 ipcMain.on('install-update', () => autoUpdater.quitAndInstall());
+
+ipcMain.on('set-position', (_, preset) => applyPositionPreset(preset));
 
 ipcMain.handle('get-login-item', () => app.getLoginItemSettings().openAtLogin);
 ipcMain.on('set-login-item', (_, enable) => app.setLoginItemSettings({ openAtLogin: enable }));

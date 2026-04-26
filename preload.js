@@ -19,6 +19,7 @@ contextBridge.exposeInMainWorld('claudeAPI', {
   onNextFetchAt:  (cb) => ipcRenderer.on('next-fetch-at', (_, v) => cb(v)),
   onUpdateDownloaded: (cb) => ipcRenderer.on('update-downloaded', (_, p) => cb(p)),
   installUpdate:  () => ipcRenderer.send('install-update'),
+  setPosition:    (preset) => ipcRenderer.send('set-position', preset),
   getLoginItem:   () => ipcRenderer.invoke('get-login-item'),
   setLoginItem:   (enable) => ipcRenderer.send('set-login-item', enable),
 });

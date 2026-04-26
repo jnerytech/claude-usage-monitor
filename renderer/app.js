@@ -485,6 +485,10 @@ saveSettingsBtn.addEventListener('click', saveSettings);
 installUpdateBtn.addEventListener('click', () => window.claudeAPI.installUpdate());
 startupToggle.addEventListener('change', () => window.claudeAPI.setLoginItem(startupToggle.checked));
 
+document.querySelectorAll('[data-position]').forEach(btn => {
+  btn.addEventListener('click', () => window.claudeAPI.setPosition(btn.dataset.position));
+});
+
 // ---------------------------------------------------------------------------
 // Init
 // ---------------------------------------------------------------------------
