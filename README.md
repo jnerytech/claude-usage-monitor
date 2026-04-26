@@ -51,6 +51,10 @@ It connects to your Claude account through a native login window, stores the ses
 - 🖥️ **System tray** — stays discreet in the system tray; one click shows/hides the widget.
 - 🌐 **Bilingual** — English and Portuguese (pt-BR) interface.
 - 🔔 **Alerts** — desktop notifications when usage crosses a threshold, reset is near, plan resets, or consumption spikes.
+- 📍 **Position presets** — snap the widget to any corner or to a second monitor with one click.
+- 🚀 **Auto-update** — in-app banner when a new version is ready; one click to install and restart.
+- ⚙️ **Organized settings** — category submenu (Appearance, Position, Data, Alerts, System) keeps options easy to find.
+- 🖥️ **Start with system** — optional toggle to launch the widget automatically at login.
 
 ---
 
@@ -147,6 +151,18 @@ The installer is generated in `dist/`.
 1. **Open the app** — the widget appears in the bottom-right corner of your screen.
 2. **Sign in** — click *Sign in to Claude* and authenticate with your normal account.
 3. **Done!** — usage data starts appearing within seconds.
+
+### Settings
+
+Settings are organized into five categories accessible from the gear menu:
+
+| Category | Contents |
+| -------- | -------- |
+| **Appearance** | Language, theme (dark / light), transparency |
+| **Position** | Snap widget to any corner or to Monitor 1 / 2 |
+| **Data** | Reload interval, metric visibility filters |
+| **Alerts** | Notification thresholds + test button |
+| **System** | Start with system toggle |
 
 ### Alert notifications
 
@@ -289,9 +305,13 @@ Converts `build/icon.svg` → `build/icon.png` (1024px) and `assets/icon.ico`, a
 - [x] Bilingual UI (en / pt-BR)
 - [x] Professional SVG icons
 - [x] Alerts — high usage, near reset, plan reset, usage spike (configurable thresholds)
+- [x] Auto-update with in-app notification banner
+- [x] Start with system (Windows login item)
+- [x] Position presets — snap to any corner or monitor
+- [x] Organized settings with category submenu
 - [ ] Usage history chart (last 7 days)
 - [ ] Configurable global shortcut to show/hide
-- [ ] Persistent widget position and size between sessions
+- [ ] Persistent widget position between sessions
 
 ---
 

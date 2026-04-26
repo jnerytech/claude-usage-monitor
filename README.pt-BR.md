@@ -51,6 +51,10 @@ Ele se conecta à sua conta Claude via uma janela de login nativa, guarda a sess
 - 🖥️ **System tray** — fica discreto na bandeja do sistema; um clique mostra/oculta.
 - 🌐 **Bilíngue** — interface em inglês e português (pt-BR).
 - 🔔 **Alertas** — notificações de desktop quando o uso passa de um limite, o reset está próximo, o plano reinicia ou há um pico de consumo.
+- 📍 **Presets de posição** — encaixe o widget em qualquer canto ou em um segundo monitor com um clique.
+- 🚀 **Atualização automática** — banner no app quando uma nova versão estiver pronta; um clique para instalar e reiniciar.
+- ⚙️ **Configurações organizadas** — submenu por categoria (Aparência, Posição, Dados, Alertas, Sistema) facilita encontrar as opções.
+- 🖥️ **Iniciar com o sistema** — toggle opcional para abrir o widget automaticamente ao fazer login.
 
 ---
 
@@ -147,6 +151,18 @@ O instalador final é gerado em `dist/`.
 1. **Abra o app** — o widget aparece no canto inferior direito da tela.
 2. **Faça login** — clique em *Sign in to Claude* e autentique com sua conta normal.
 3. **Pronto!** — os dados de uso começam a aparecer em segundos.
+
+### Configurações
+
+As configurações são organizadas em cinco categorias acessíveis pelo menu de engrenagem:
+
+| Categoria | Conteúdo |
+| --------- | -------- |
+| **Aparência** | Idioma, tema (escuro / claro), transparência |
+| **Posição** | Encaixar o widget em qualquer canto ou no Monitor 1 / 2 |
+| **Dados** | Intervalo de recarga, filtros de visibilidade das métricas |
+| **Alertas** | Limites de notificação + botão de teste |
+| **Sistema** | Toggle para iniciar com o sistema |
 
 ### Notificações de alerta
 
@@ -286,9 +302,13 @@ Converte `build/icon.svg` → `build/icon.png` (1024px) e `assets/icon.ico`, e `
 - [x] Interface bilíngue (en / pt-BR)
 - [x] Ícones SVG profissionais
 - [x] Alertas — uso alto, próximo ao reset, reset do plano, pico de consumo (limites configuráveis)
+- [x] Atualização automática com banner de notificação no app
+- [x] Iniciar com o sistema (login item do Windows)
+- [x] Presets de posição — encaixar em qualquer canto ou monitor
+- [x] Configurações organizadas com submenu por categoria
 - [ ] Histórico de uso com gráfico (últimos 7 dias)
 - [ ] Atalho global configurável para mostrar/ocultar
-- [ ] Posição / tamanho do widget persistidos entre sessões
+- [ ] Posição do widget persistida entre sessões
 
 ---
 
