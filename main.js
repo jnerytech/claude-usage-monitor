@@ -301,6 +301,7 @@ function createMainWindow() {
 function notify(title, body) {
   if (!Notification.isSupported()) return;
   new Notification({ title: `Claude Usage Monitor — ${title}`, body }).show();
+  mainWindow?.webContents.send('notification-added', { title, body, timestamp: Date.now() });
 }
 
 function parseResetMins(text) {
@@ -538,6 +539,11 @@ function setupAutoUpdater() {
     console.log('Update downloaded:', info.version);
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.webContents.send('update-downloaded', { version: info.version });
+      mainWindow.webContents.send('notification-added', {
+        title: `Update v${info.version} ready`,
+        body: 'Click Install & Restart to apply.',
+        timestamp: Date.now(),
+      });
     }
   });
 
