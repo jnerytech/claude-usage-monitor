@@ -23,6 +23,7 @@ const usageList     = document.getElementById('usage-list');
 const errorMsg      = document.getElementById('error-msg');
 const settingsPanel = document.getElementById('settings-panel');
 
+const headerSessionEl  = document.getElementById('header-session');
 const updateBanner     = document.getElementById('update-banner');
 const updateText       = document.getElementById('update-text');
 const installUpdateBtn = document.getElementById('install-update-btn');
@@ -144,6 +145,25 @@ function pctClass(pct) {
   return 'low';
 }
 
+function updateHeaderSession() {
+  if (!lastUsageData || !lastUsageData.length) {
+    headerSessionEl.textContent = '';
+    headerSessionEl.className = '';
+    return;
+  }
+  const visible = lastUsageData.filter(i => !settings.hiddenItems.includes(i.label));
+  if (!visible.length) {
+    headerSessionEl.textContent = '';
+    headerSessionEl.className = '';
+    return;
+  }
+  const item = visible.find(i => /session/i.test(i.label)) || visible[0];
+  const resetDate = parseResetDate(null, item.resetText);
+  const resetPart = resetDate ? ` · ${formatTimeRemaining(resetDate - Date.now())}` : '';
+  headerSessionEl.textContent = `${item.pct}%${resetPart}`;
+  headerSessionEl.className = pctClass(item.pct);
+}
+
 function renderUsage(items) {
   usageList.innerHTML = '';
 
@@ -172,6 +192,7 @@ function renderUsage(items) {
     usageList.appendChild(item);
   });
 
+  updateHeaderSession();
   showUsage();
 }
 

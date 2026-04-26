@@ -723,9 +723,24 @@ html, body {
 /* ── Minimized state ── */
 body.minimized #body,
 body.minimized #footer,
-body.minimized #update-banner {
+body.minimized #update-banner,
+body.minimized #countdown,
+body.minimized #refresh-btn,
+body.minimized #settings-btn {
   display: none;
 }
+
+#header-session {
+  display: none;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  color: var(--accent-blue);
+}
+#header-session.medium { color: var(--accent-orange); }
+#header-session.high   { color: var(--accent-red); }
+body.minimized #header-session { display: block; }
 
 body.minimized #header {
   border-bottom: none;
