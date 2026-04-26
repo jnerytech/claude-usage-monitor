@@ -555,6 +555,7 @@ ipcMain.on('set-position', (_, preset) => applyPositionPreset(preset));
 
 ipcMain.handle('get-login-item', () => app.getLoginItemSettings().openAtLogin);
 ipcMain.on('set-login-item', (_, enable) => app.setLoginItemSettings({ openAtLogin: enable }));
+ipcMain.on('test-notification', () => notify('Test', 'Notifications are working!'));
 
 app.whenReady().then(async () => {
   await restoreCookies();

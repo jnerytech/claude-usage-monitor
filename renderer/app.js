@@ -511,6 +511,7 @@ retryBtn.addEventListener('click', () => {
 reconnectBtn.addEventListener('click', () => window.claudeAPI.openLogin());
 saveSettingsBtn.addEventListener('click', saveSettings);
 saveAlertsBtn.addEventListener('click', saveSettings);
+document.getElementById('test-notification-btn').addEventListener('click', () => window.claudeAPI.testNotification());
 installUpdateBtn.addEventListener('click', () => window.claudeAPI.installUpdate());
 startupToggle.addEventListener('change', () => window.claudeAPI.setLoginItem(startupToggle.checked));
 

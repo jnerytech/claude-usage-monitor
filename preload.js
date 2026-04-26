@@ -21,5 +21,6 @@ contextBridge.exposeInMainWorld('claudeAPI', {
   installUpdate:  () => ipcRenderer.send('install-update'),
   setPosition:    (preset) => ipcRenderer.send('set-position', preset),
   getLoginItem:   () => ipcRenderer.invoke('get-login-item'),
-  setLoginItem:   (enable) => ipcRenderer.send('set-login-item', enable),
+  setLoginItem:      (enable) => ipcRenderer.send('set-login-item', enable),
+  testNotification:  () => ipcRenderer.send('test-notification'),
 });
