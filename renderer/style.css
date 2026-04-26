@@ -301,6 +301,29 @@ html, body {
   to { transform: rotate(360deg); }
 }
 
+/* ── Update banner ── */
+#update-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(74, 158, 255, 0.1);
+  border-top: 1px solid rgba(74, 158, 255, 0.22);
+  flex-shrink: 0;
+}
+
+#update-text {
+  font-size: 11px;
+  color: var(--accent-blue);
+  flex: 1;
+}
+
+#update-banner .primary-btn {
+  font-size: 11px;
+  padding: 4px 10px;
+  flex-shrink: 0;
+}
+
 /* ── Footer ── */
 #footer {
   padding: 5px 12px 7px;
@@ -657,7 +680,8 @@ html, body {
 
 /* ── Minimized state ── */
 body.minimized #body,
-body.minimized #footer {
+body.minimized #footer,
+body.minimized #update-banner {
   display: none;
 }
 

@@ -23,6 +23,10 @@ const usageList     = document.getElementById('usage-list');
 const errorMsg      = document.getElementById('error-msg');
 const settingsPanel = document.getElementById('settings-panel');
 
+const updateBanner     = document.getElementById('update-banner');
+const updateText       = document.getElementById('update-text');
+const installUpdateBtn = document.getElementById('install-update-btn');
+
 const intervalSelect   = document.getElementById('interval-select');
 const itemsFilter      = document.getElementById('items-filter');
 const saveSettingsBtn  = document.getElementById('save-settings-btn');
@@ -390,6 +394,12 @@ window.claudeAPI.onNextFetchAt((val) => {
   nextFetchAt = val;
 });
 
+window.claudeAPI.onUpdateDownloaded(({ version }) => {
+  updateText.textContent = `v${version} ready to install`;
+  updateBanner.style.display = 'flex';
+  autoResize();
+});
+
 window.claudeAPI.onAuthStatus((payload) => {
   loggedIn = payload.loggedIn;
   if (loggedIn) {
@@ -470,6 +480,7 @@ retryBtn.addEventListener('click', () => {
 });
 reconnectBtn.addEventListener('click', () => window.claudeAPI.openLogin());
 saveSettingsBtn.addEventListener('click', saveSettings);
+installUpdateBtn.addEventListener('click', () => window.claudeAPI.installUpdate());
 
 // ---------------------------------------------------------------------------
 // Init
