@@ -41,6 +41,8 @@ const LOCALES = {
     opt1m:  '1 minuto',
     opt2m:  '2 minutos',
     opt5m:  '5 minutos',
+    startupLabel: 'Inicialização',
+    startupDesc:  'Iniciar com o sistema',
   },
   'en': {
     waiting:       'Waiting for data…',
@@ -82,6 +84,8 @@ const LOCALES = {
     opt1m:  '1 minute',
     opt2m:  '2 minutes',
     opt5m:  '5 minutes',
+    startupLabel: 'Startup',
+    startupDesc:  'Start with system',
   },
 };
 

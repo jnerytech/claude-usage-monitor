@@ -27,6 +27,7 @@ const updateBanner     = document.getElementById('update-banner');
 const updateText       = document.getElementById('update-text');
 const installUpdateBtn = document.getElementById('install-update-btn');
 
+const startupToggle    = document.getElementById('startup-enabled');
 const intervalSelect   = document.getElementById('interval-select');
 const itemsFilter      = document.getElementById('items-filter');
 const saveSettingsBtn  = document.getElementById('save-settings-btn');
@@ -213,6 +214,7 @@ function openSettings() {
   settingsBtn.innerHTML = SVG_BACK;
   settingsBtn.title = t('back');
 
+  window.claudeAPI.getLoginItem().then(v => { startupToggle.checked = v; });
   intervalSelect.value = String(settings.refreshInterval);
   applyTheme(settings.theme || 'dark');
   applyOpacity(settings.opacity ?? 1);
@@ -481,6 +483,7 @@ retryBtn.addEventListener('click', () => {
 reconnectBtn.addEventListener('click', () => window.claudeAPI.openLogin());
 saveSettingsBtn.addEventListener('click', saveSettings);
 installUpdateBtn.addEventListener('click', () => window.claudeAPI.installUpdate());
+startupToggle.addEventListener('change', () => window.claudeAPI.setLoginItem(startupToggle.checked));
 
 // ---------------------------------------------------------------------------
 // Init

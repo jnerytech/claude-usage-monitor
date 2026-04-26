@@ -512,6 +512,9 @@ function setupAutoUpdater() {
 
 ipcMain.on('install-update', () => autoUpdater.quitAndInstall());
 
+ipcMain.handle('get-login-item', () => app.getLoginItemSettings().openAtLogin);
+ipcMain.on('set-login-item', (_, enable) => app.setLoginItemSettings({ openAtLogin: enable }));
+
 app.whenReady().then(async () => {
   await restoreCookies();
   createMainWindow();
