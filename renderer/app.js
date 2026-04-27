@@ -195,7 +195,11 @@ function renderUsage(items) {
       <div class="bar-track">
         <div class="bar-fill ${cls}${fillW === 100 ? ' full-bar' : ''}" style="width:${fillW}%"></div>
       </div>
-      ${resetText ? `<div class="usage-reset">${esc(resetText)}</div>` : ''}
+      ${resetText ? (() => {
+        const rd = parseResetDate(null, resetText);
+        const display = rd ? `in ${formatTimeRemaining(rd - Date.now())}` : esc(resetText);
+        return `<div class="usage-reset">${display}</div>`;
+      })() : ''}
     `;
     usageList.appendChild(item);
   });
@@ -468,6 +472,26 @@ function parseResetDate(resetAt, text) {
   // "Resets in X days"
   const inDays = text.match(/in\s+(\d+)\s+day/i);
   if (inDays) return new Date(Date.now() + parseInt(inDays[1]) * 86400000);
+  // "Resets Sat 8:00" or "Resets Sat at 8:00 AM"
+  const weekdayTime = text.match(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\w*[\s,]* *(?:at\s+)?(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+  if (weekdayTime) {
+    const DAYS = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
+    const targetDay = DAYS[weekdayTime[1].toLowerCase().slice(0, 3)];
+    let h = parseInt(weekdayTime[2]);
+    const m = parseInt(weekdayTime[3]);
+    const ampm = weekdayTime[4];
+    if (ampm) {
+      if (ampm.toLowerCase() === 'pm' && h !== 12) h += 12;
+      if (ampm.toLowerCase() === 'am' && h === 12) h = 0;
+    }
+    const now = new Date();
+    const d = new Date(now);
+    d.setHours(h, m, 0, 0);
+    let daysUntil = (targetDay - now.getDay() + 7) % 7;
+    if (daysUntil === 0 && d <= now) daysUntil = 7;
+    d.setDate(d.getDate() + daysUntil);
+    return d;
+  }
   // "Resets May 1"
   const monthDay = text.match(/(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\.?\s+\d+/i);
   if (monthDay) {
