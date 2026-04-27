@@ -547,6 +547,10 @@ function setupAutoUpdater() {
   autoUpdater.on('update-available', (info) => {
     console.log('Update available:', info.version);
   });
+  autoUpdater.on('update-not-available', () => {
+    mainWindow?.webContents.send('update-not-available');
+  });
+
   autoUpdater.on('update-downloaded', (info) => {
     console.log('Update downloaded:', info.version);
     if (mainWindow && !mainWindow.isDestroyed()) {
@@ -571,6 +575,16 @@ ipcMain.on('install-update', () => autoUpdater.quitAndInstall());
 
 ipcMain.on('set-position', (_, preset) => applyPositionPreset(preset));
 
+ipcMain.handle('get-version', () => app.getVersion());
+ipcMain.on('check-for-updates', () => {
+  if (!app.isPackaged) {
+    mainWindow?.webContents.send('update-not-available');
+    return;
+  }
+  autoUpdater.checkForUpdatesAndNotify().catch(() => {
+    mainWindow?.webContents.send('update-not-available');
+  });
+});
 ipcMain.handle('get-login-item', () => app.getLoginItemSettings().openAtLogin);
 ipcMain.on('set-login-item', (_, enable) => app.setLoginItemSettings({ openAtLogin: enable }));
 ipcMain.on('test-notification', () => notify('Test', 'Notifications are working!'));

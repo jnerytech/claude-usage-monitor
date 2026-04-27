@@ -387,6 +387,10 @@ function openSettings() {
   document.getElementById('alert-spike-enabled').checked      = sp.enabled   ?? true;
   document.getElementById('alert-spike-delta').value          = sp.deltaPct  ?? 20;
 
+  window.claudeAPI.getVersion().then(v => {
+    document.getElementById('settings-version').textContent = `v${v}`;
+  });
+
   settingsMenu.style.display = 'flex';
   document.querySelectorAll('.settings-sub').forEach(sub => { sub.style.display = 'none'; });
 
@@ -575,12 +579,6 @@ window.claudeAPI.onNextFetchAt((val) => {
   nextFetchAt = val;
 });
 
-window.claudeAPI.onUpdateDownloaded(({ version }) => {
-  updateText.textContent = `v${version} ready to install`;
-  updateBanner.style.display = 'flex';
-  autoResize();
-});
-
 window.claudeAPI.onAuthStatus((payload) => {
   loggedIn = payload.loggedIn;
   if (loggedIn) {
@@ -678,6 +676,30 @@ reconnectBtn.addEventListener('click', () => window.claudeAPI.openLogin());
 saveSettingsBtn.addEventListener('click', saveSettings);
 saveAlertsBtn.addEventListener('click', saveSettings);
 document.getElementById('test-notification-btn').addEventListener('click', () => window.claudeAPI.testNotification());
+
+document.getElementById('check-update-btn').addEventListener('click', () => {
+  const btn = document.getElementById('check-update-btn');
+  const status = document.getElementById('update-status-text');
+  btn.disabled = true;
+  status.textContent = t('updateChecking');
+  status.style.display = 'block';
+  window.claudeAPI.checkForUpdates();
+});
+
+window.claudeAPI.onUpdateNotAvailable(() => {
+  const btn = document.getElementById('check-update-btn');
+  const status = document.getElementById('update-status-text');
+  if (btn) btn.disabled = false;
+  if (status) { status.textContent = t('updateUpToDate'); status.style.display = 'block'; }
+});
+
+window.claudeAPI.onUpdateDownloaded(({ version }) => {
+  const status = document.getElementById('update-status-text');
+  if (status) { status.textContent = t('updateAvailable'); status.style.display = 'block'; }
+  updateText.textContent = `v${version} ready to install`;
+  updateBanner.style.display = 'flex';
+  autoResize();
+});
 installUpdateBtn.addEventListener('click', () => window.claudeAPI.installUpdate());
 startupToggle.addEventListener('change', () => window.claudeAPI.setLoginItem(startupToggle.checked));
 

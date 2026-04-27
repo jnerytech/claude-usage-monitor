@@ -212,6 +212,9 @@
           <button class="primary-btn" id="save-alerts-btn" data-i18n-text="saveBtn">Salvar</button>
         </div>
 
+        <!-- Version footer -->
+        <div id="settings-version"></div>
+
         <!-- System sub-panel -->
         <div class="settings-sub" id="settings-sub-system" style="display:none">
           <div class="settings-section">
@@ -220,6 +223,11 @@
               <span class="toggle"><input type="checkbox" id="startup-enabled"><span class="toggle-track"></span></span>
               <span class="alert-row-label" data-i18n-text="startupDesc">Iniciar com o sistema</span>
             </label>
+          </div>
+          <div class="settings-section">
+            <div class="settings-label" data-i18n-text="updateLabel">Atualização</div>
+            <button class="outline-btn" id="check-update-btn" data-i18n-text="checkUpdateBtn">Verificar atualizações</button>
+            <p class="settings-hint" id="update-status-text" style="margin-top:6px;display:none"></p>
           </div>
         </div>
 

@@ -61,6 +61,11 @@ const LOCALES = {
     notifPanelTitle: 'Notificações',
     notifClearAll:   'Limpar tudo',
     notifEmpty:      'Sem notificações',
+    updateLabel:     'Atualização',
+    checkUpdateBtn:  'Verificar atualizações',
+    updateChecking:  'Verificando…',
+    updateUpToDate:  'Você está na versão mais recente.',
+    updateAvailable: 'Atualização disponível — baixando…',
   },
   'en': {
     waiting:       'Waiting for data…',
@@ -122,6 +127,11 @@ const LOCALES = {
     notifPanelTitle: 'Notifications',
     notifClearAll:   'Clear all',
     notifEmpty:      'No notifications',
+    updateLabel:     'Updates',
+    checkUpdateBtn:  'Check for updates',
+    updateChecking:  'Checking…',
+    updateUpToDate:  'You are on the latest version.',
+    updateAvailable: 'Update available — downloading…',
   },
 };
 
