@@ -16,7 +16,7 @@ let extractTimer = null; // fires every 2s → re-reads already-loaded DOM
 let nextFetchAt = null;
 let isQuitting = false;
 let trayNotificationShown = false;
-let alertState = { thresholdFired: {}, nearResetFired: {}, prevPct: {} };
+let alertState = { thresholdFired: {}, nearResetFired: {}, resetWarningFired: {}, prevPct: {} };
 
 const DEFAULT_INTERVAL_S = 5;
 const RENDER_DELAY_MS = 3_000;
@@ -343,6 +343,18 @@ function checkAlerts(items, settings) {
           alertState.nearResetFired[label] = true;
         }
         if (pct <= 10) alertState.nearResetFired[label] = false;
+      }
+    }
+
+    if (alerts.resetWarning?.enabled ?? true) {
+      const minsLeft = parseResetMins(resetText);
+      if (minsLeft !== null) {
+        const threshold = alerts.resetWarning?.minutesLeft ?? 30;
+        if (minsLeft <= threshold && !alertState.resetWarningFired[label]) {
+          notify(`${label} — reset in ${Math.round(minsLeft)} min`, `Session will reset soon`);
+          alertState.resetWarningFired[label] = true;
+        }
+        if (minsLeft > threshold + 5) alertState.resetWarningFired[label] = false;
       }
     }
 

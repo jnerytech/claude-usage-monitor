@@ -66,7 +66,7 @@ let loggedIn       = false;
 let lastUsageData  = null;
 let lastResetMs    = null;
 let resetTick      = null;
-let settings       = { refreshInterval: 5, hiddenItems: [], theme: 'dark', opacity: 1, lang: 'en', alerts: { threshold: { enabled: true, pct: 80 }, nearReset: { enabled: true, minutesLeft: 30, minPct: 75 }, planReset: { enabled: true }, spike: { enabled: true, deltaPct: 20 } } };
+let settings       = { refreshInterval: 5, hiddenItems: [], theme: 'dark', opacity: 1, lang: 'en', alerts: { threshold: { enabled: true, pct: 80 }, nearReset: { enabled: true, minutesLeft: 30, minPct: 75 }, resetWarning: { enabled: true, minutesLeft: 30 }, planReset: { enabled: true }, spike: { enabled: true, deltaPct: 20 } } };
 let notifications  = JSON.parse(localStorage.getItem('notif_v1') || '[]');
 let notifOpen      = false;
 
@@ -377,9 +377,12 @@ function openSettings() {
   const sp  = a.spike      || {};
   document.getElementById('alert-threshold-enabled').checked  = thr.enabled  ?? true;
   document.getElementById('alert-threshold-pct').value        = thr.pct       ?? 80;
+  const rw  = a.resetWarning || {};
   document.getElementById('alert-nearreset-enabled').checked  = nr.enabled   ?? true;
   document.getElementById('alert-nearreset-mins').value       = nr.minutesLeft ?? 30;
   document.getElementById('alert-nearreset-pct').value        = nr.minPct    ?? 75;
+  document.getElementById('alert-resetwarning-enabled').checked = rw.enabled ?? true;
+  document.getElementById('alert-resetwarning-mins').value      = rw.minutesLeft ?? 30;
   document.getElementById('alert-planreset-enabled').checked  = pr.enabled   ?? true;
   document.getElementById('alert-spike-enabled').checked      = sp.enabled   ?? true;
   document.getElementById('alert-spike-delta').value          = sp.deltaPct  ?? 20;
@@ -432,6 +435,10 @@ async function saveSettings() {
       enabled:     document.getElementById('alert-nearreset-enabled').checked,
       minutesLeft: parseInt(document.getElementById('alert-nearreset-mins').value),
       minPct:      parseInt(document.getElementById('alert-nearreset-pct').value),
+    },
+    resetWarning: {
+      enabled:     document.getElementById('alert-resetwarning-enabled').checked,
+      minutesLeft: parseInt(document.getElementById('alert-resetwarning-mins').value),
     },
     planReset: {
       enabled: document.getElementById('alert-planreset-enabled').checked,
