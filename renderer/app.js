@@ -197,7 +197,7 @@ function renderUsage(items) {
       </div>
       ${resetText ? (() => {
         const rd = parseResetDate(null, resetText);
-        const display = rd ? `in ${formatTimeRemaining(rd - Date.now())}` : esc(resetText);
+        const display = rd ? `Resets in ${formatTimeRemaining(rd - Date.now())}` : esc(resetText);
         return `<div class="usage-reset">${display}</div>`;
       })() : ''}
     `;
