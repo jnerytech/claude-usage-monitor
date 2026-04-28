@@ -72,20 +72,43 @@ const EXTRACT_SCRIPT = `
       const pct = parseInt(bar.getAttribute('aria-valuenow'), 10);
       if (isNaN(pct)) continue;
 
-      // Walk up DOM to find a container that has 2+ <p> tags
-      let node = bar.parentElement;
       let label = '';
       let resetText = '';
 
-      for (let i = 0; i < 12 && node; i++) {
-        const ps = Array.from(node.querySelectorAll('p'));
-        if (ps.length >= 2) {
-          label = ps[0].textContent.trim();
-          const resetP = ps.find(p => /reset/i.test(p.textContent));
-          resetText = resetP ? resetP.textContent.trim() : '';
-          break;
+      // Walk up looking for a sibling element that has .text-body (new layout uses spans, not p tags)
+      let node = bar.parentElement;
+      for (let i = 0; i < 10 && node; i++) {
+        const parent = node.parentElement;
+        if (!parent) break;
+        for (const sib of parent.children) {
+          if (sib === node) continue;
+          const labelEl = sib.querySelector('.text-body');
+          if (labelEl) {
+            label = labelEl.textContent.trim();
+            const leaves = Array.from(sib.querySelectorAll('span, div, p'))
+              .filter(el => el.children.length === 0);
+            const resetEl = leaves.find(el => /reset/i.test(el.textContent) && el.textContent.trim().length < 60);
+            resetText = resetEl ? resetEl.textContent.trim() : '';
+            break;
+          }
         }
-        node = node.parentElement;
+        if (label) break;
+        node = parent;
+      }
+
+      // Fallback: old p-tag approach
+      if (!label) {
+        node = bar.parentElement;
+        for (let i = 0; i < 12 && node; i++) {
+          const ps = Array.from(node.querySelectorAll('p'));
+          if (ps.length >= 2) {
+            label = ps[0].textContent.trim();
+            const resetP = ps.find(p => /reset/i.test(p.textContent));
+            resetText = resetP ? resetP.textContent.trim() : '';
+            break;
+          }
+          node = node.parentElement;
+        }
       }
 
       if (!label) continue;
