@@ -599,14 +599,17 @@ ipcMain.on('install-update', () => autoUpdater.quitAndInstall());
 ipcMain.on('set-position', (_, preset) => applyPositionPreset(preset));
 
 ipcMain.handle('get-version', () => app.getVersion());
-ipcMain.on('check-for-updates', () => {
+ipcMain.on('check-for-updates', async () => {
   if (!app.isPackaged) {
     mainWindow?.webContents.send('update-not-available');
     return;
   }
-  autoUpdater.checkForUpdatesAndNotify().catch(() => {
+  try {
+    await autoUpdater.checkForUpdates();
+  } catch (err) {
+    console.error('check-for-updates error:', err);
     mainWindow?.webContents.send('update-not-available');
-  });
+  }
 });
 ipcMain.handle('get-login-item', () => app.getLoginItemSettings().openAtLogin);
 ipcMain.on('set-login-item', (_, enable) => app.setLoginItemSettings({ openAtLogin: enable }));

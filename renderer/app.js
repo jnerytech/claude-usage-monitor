@@ -690,6 +690,12 @@ document.getElementById('check-update-btn').addEventListener('click', () => {
   status.textContent = t('updateChecking');
   status.style.display = 'block';
   window.claudeAPI.checkForUpdates();
+  setTimeout(() => {
+    if (btn.disabled) {
+      btn.disabled = false;
+      status.textContent = t('updateUpToDate');
+    }
+  }, 12000);
 });
 
 window.claudeAPI.onUpdateNotAvailable(() => {
