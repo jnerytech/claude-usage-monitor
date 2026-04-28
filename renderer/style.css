@@ -825,6 +825,16 @@ body.minimized #bell-btn { display: flex; }
   color: var(--text-primary);
 }
 
+.outline-btn.danger {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+}
+
+.outline-btn.danger:hover {
+  background: var(--accent-red);
+  color: #fff;
+}
+
 .danger-btn {
   flex: 1;
   background: var(--accent-red);

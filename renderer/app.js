@@ -677,6 +677,12 @@ saveSettingsBtn.addEventListener('click', saveSettings);
 saveAlertsBtn.addEventListener('click', saveSettings);
 document.getElementById('test-notification-btn').addEventListener('click', () => window.claudeAPI.testNotification());
 
+document.getElementById('settings-login-btn').addEventListener('click', () => window.claudeAPI.openLogin());
+document.getElementById('settings-logout-btn').addEventListener('click', () => {
+  window.claudeAPI.logout();
+  closeSettings();
+});
+
 document.getElementById('check-update-btn').addEventListener('click', () => {
   const btn = document.getElementById('check-update-btn');
   const status = document.getElementById('update-status-text');
